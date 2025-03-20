@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HeroesOfLegends.Data.Models.ThumbModels.ThumbImgCharacter">
+    <Position X="6.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Models\ThumModels\ThumbImgCharacter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.ThumbModels.ThumbImgWorld">
+    <Position X="11.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Models\ThumModels\ThumbImgWorld.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.ThumbModels.ThumbnailImage">
+    <Position X="10" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAACAAAAAAAAAAIAEAAAAIAAAAAABAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Models\ThumModels\ThumbnailImage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.ThumModels.ThumbImgNarrative">
+    <Position X="9" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Models\ThumModels\ThumbImgNarrative.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.ThumModels.ThumbImgRace">
+    <Position X="13.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Models\ThumModels\ThumbImgRace.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

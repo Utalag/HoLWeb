@@ -1,0 +1,145 @@
+﻿@page "/Account/Manage/SetRollFromUser"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using HoLWeb.DataLayer.Database
+@using HoLWeb.DataLayer.Models.IdentityModels
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+
+@inject IdentityRedirectManager RedirectManager
+@inject UserManager<ApplicationUser> UserManager
+@inject RoleManager<ApplicationRole> RoleManager
+
+<h3>SetRollFromUser</h3>
+
+<AuthorizeView Roles=@(ApplicationRole.Admin)>
+    <Authorized >
+        <table class="table-bordered d-table-cell">
+            <thead>
+                <tr>
+                    <th class="text-center align-text-top" rowspan="2">User</th>
+                    <th colspan="@roles.Count()" class="text-center">Rolls</th>
+                    <th class="text-center align-text-top" width="50px" rowspan="2">Detail</th>
+                </tr>
+                <tr>
+                    @foreach (var role in roles)
+                    {
+                        <th class="th_verical">@role.Name</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in userRoles.Keys)
+                {
+                    <tr class="text-center">
+                        <td>@user.UserName</td>
+                        @foreach (var role in roles)
+                        {
+                            <td>
+                                @if (user == userRoles.Keys.First())
+                                {
+                                    <p>✔</p>
+                                }
+                                else
+                                {
+                                    @if (userRoles[user].Contains(role))
+                                    {
+                                        <p class="btn btn-success" @onclick="@(()=>OnRoleChanged(user,role,userRoles[user].Contains(role)))">✔</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="btn btn-danger" @onclick="@(()=>OnRoleChanged(user,role,userRoles[user].Contains(role)))">✘</p>
+                                    }
+                                }
+
+                            </td>
+                        }
+                        <td>
+                            <a class="btn btn-info" href="@($"/applicationusers/details?id={user.Id}")">Detail</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Authorized>
+    <NotAuthorized>
+        <p>Only Admin can see this page</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+<hr />
+@foreach (var user in userRoles.Keys)
+{
+    @user.UserName
+
+    @foreach (var item in userRoles[user])
+    {
+        <span> : </span>@item.Name
+    }
+    <hr />
+}
+
+
+@code {
+    private IEnumerable<ApplicationUser> users = new List<ApplicationUser>();
+    private IEnumerable<ApplicationRole> roles = new List<ApplicationRole>();
+
+    private Dictionary<ApplicationUser, List<ApplicationRole>> userRoles = new Dictionary<ApplicationUser, List<ApplicationRole>>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = UserManager.Users.ToList();
+        roles = RoleManager.Roles.ToList();
+
+        foreach (var user in users)
+        {
+            var roll = new List<ApplicationRole>();
+            foreach (string rollname in await UserManager.GetRolesAsync(user))
+            {
+                roll.Add(await RoleManager.FindByNameAsync(rollname));  
+            }
+            userRoles.Add(user, roll);
+        }
+    }
+
+    private async Task OnRoleChanged(ApplicationUser user, ApplicationRole role, bool isSelected)
+    {
+        if (role == null)
+        {
+            return;
+        }
+        else
+        {
+            if (!isSelected)
+            {
+
+                userRoles[user].Add(role);
+                await UserManager.AddToRoleAsync(user, role.Name);
+            }
+            else
+            {
+
+                userRoles[user].Remove(role);
+                await UserManager.RemoveFromRoleAsync(user, role.Name);
+
+            }
+            StateHasChanged();
+        }
+    }
+
+}
+
+<style>
+    .th_verical {
+        writing-mode: sideways-lr;
+        text-align: center;
+        vertical-align: middle;
+        margin-left: auto;
+        height: 100px; /* Adjust the height as needed */
+        width: 20px;
+    }
+</style>

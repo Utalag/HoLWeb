@@ -1,0 +1,51 @@
+﻿@page "/races"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using HoLWeb.DataLayer.Models
+@using HoLWeb.DataLayer.Database
+@using HoLWeb.DataLayer.Interfaces
+@inject IRaceRepository RaceRepository
+
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="races/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="races">
+    <PropertyColumn Property="race => race.RaceName" />
+    <PropertyColumn Property="race => race.RaceDescription" />
+    <PropertyColumn Property="race => race.RaceSize" />
+    <PropertyColumn Property="race => race.Mobility" />
+    <PropertyColumn Property="race => race.SpecialAbilities" />
+    <PropertyColumn Property="race => race.SpecialAbilitiesDescription" />
+    <PropertyColumn Property="race => race.WeightMin" />
+    <PropertyColumn Property="race => race.WeightMax" />
+    <PropertyColumn Property="race => race.BodyHeightMin" />
+    <PropertyColumn Property="race => race.BodyHeightMax" />
+    <PropertyColumn Property="race => race.StrengthStatId" />
+    <PropertyColumn Property="race => race.AgilityStatId" />
+    <PropertyColumn Property="race => race.ConstitutionStatId" />
+    <PropertyColumn Property="race => race.IntelligenceStatId" />
+    <PropertyColumn Property="race => race.CharismaStatId" />
+
+    <TemplateColumn Context="race">
+        <a href="@($"races/edit?id={race.Id}")">Edit</a> |
+        <a href="@($"races/details?id={race.Id}")">Details</a> |
+        <a href="@($"races/delete?id={race.Id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private IQueryable<Race> races = default!;
+
+    protected override void OnInitialized()
+    {
+        races = RaceRepository.All().AsQueryable();
+    }
+
+
+}

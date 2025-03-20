@@ -1,0 +1,278 @@
+﻿@page "/worlds"
+@rendermode InteractiveServer
+
+@using HoLWeb.BusinessLayer.Models
+@using HoLWeb.BusinessLayer.Interfaces
+@using Microsoft.JSInterop;
+@using System.Threading.Tasks;
+@using HoLWeb.Components.WorldPages.WorldComponents
+
+@inject IJSRuntime JSRuntime
+@inject IWorldManager WorldManager
+@inject INarrativeManager NarrativeManager
+@inject IRaceManager RaceManager
+@inject IProfessionManager ProfessionManager
+
+<PageTitle>Herní světy</PageTitle>
+
+
+
+<!--Světy-->
+<div class="d-flex justify-content-around" style="border:dotted">
+    <button @onclick="PreviousPage">Previous</button>
+    @if(Worlds != null)
+    {
+        foreach(var world in Worlds)
+        {
+            <div @onclick="()=>OnChangeWorld(world)">
+                <CascadingValue Value="@world">
+                    <WorldImg ClassType=@world.GetType().ToString() />
+                </CascadingValue>
+            </div>
+        }
+        <button @onclick="NextPage">Next</button>
+    }
+    else
+    {
+        <p><em>Loading...</em></p>
+    }
+</div>
+
+<hr /> 
+<div style="border:dotted">
+    <WorldDataNavigation World="@SelectedWorld" />
+</div>
+
+<ht/>
+<!--Data světa-->
+
+<div class="row" style="border:dotted">
+
+    <!--Popis světa-->
+    <div class="col-12 col-lg-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">Popis světa</h5>
+            </div>
+            <div class="card-body">
+                <div style="width: 18rem; height: 15rem; overflow-y: auto;">
+                    @SelectedWorld.WorldDescription
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Příběhy-->
+    <div class="col-12 col-lg-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">Příběhy</h5>
+            </div>
+        </div>
+
+
+        <div class="card-body d-flex" style="height: 15rem; border:dotted">
+            <div>
+                <ul class="list-group">
+                    @if(SelectedWorld.NarrativeIds.Count != 0)
+                    {
+                        @foreach(var narrative in SelectedWorld.Narratives)
+                        {
+                            <li id="@($"narrative{narrative.Id}")" class="list-group-item btn btn-outline-secondary" @onclick="()=>OnChangeNarrativ(narrative)">@narrative.NarrativeName</li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item text-center"><em>Zatím prázdno</em></li>
+                    }
+                </ul>
+
+            </div>
+            <div class="card-body">
+                @if(SelectedNarrative == null)
+                {
+                    <p><em>Nebyl vybrán žádný příběh</em></p>
+                }
+                else
+                {
+                    <p>Název: @SelectedNarrative.NarrativeName</p>
+                    <p>Věk: @SelectedNarrative.Era</p>
+                    <p>Rok: @SelectedNarrative.Year</p>
+                    @if(SelectedNarrative.ProfessionModulIds.Count != 0)
+                    {
+                        <p>Profese: </p>
+                        @foreach(var modulId in SelectedNarrative.ProfessionModulIds)
+                        {
+                            <p>@modulId</p>
+                        }
+                    }
+
+                }
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!--Rasy-->
+    <div class="col-12 col-lg-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">Dostupné rasy</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    @if (SelectedWorld.RaceIds.Count != 0)
+                    {
+                        @foreach (var race in SelectedWorld.Races)
+                        {
+                            <li id="@($"race{race.Id}")" class="list-group-item btn btn-outline-secondary">@race.RaceName</li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item text-center"><em>Zatím prázdno</em></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!--Dm and players-->
+    <div class="col-12 col-lg-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">PJ a hráči</h5>
+            </div>
+            <div class="card-body">
+                <p>PJ: @SelectedWorld.GameMasterId</p>
+                Hráči:
+                @foreach(var player in SelectedWorld.Players)
+                {
+                    <p>@player</p>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+@code {
+    private int pageNumber = 1;
+    private int pageSize = 3;
+
+    private ICollection<WorldDto>? Worlds { get; set; } = new List<WorldDto>();
+    private WorldDto SelectedWorld { get; set; } = new WorldDto();
+    private NarrativeDto SelectedNarrative { get; set; } = new NarrativeDto();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Worlds = await WorldManager.GetPageAsyc(pageNumber,pageSize,true);
+        foreach (var itemworld in Worlds)
+        {
+            await PreloadWorldDataAsync(itemworld);
+        }
+
+        SelectedWorld = Worlds.FirstOrDefault();
+        SelectedNarrative = SelectedWorld.Narratives.FirstOrDefault();
+    }
+
+    private async Task PreloadWorldDataAsync(WorldDto world)
+    {
+        if (world != null)
+        {
+            world.Narratives = (await NarrativeManager.GetDataByIdsAsync(world.NarrativeIds.ToList(),false)).ToList();
+            world.Races = (await RaceManager.GetDataByIdsAsync(world.RaceIds.ToList(),false)).ToList();
+        }
+    }
+    private async Task OnChangeWorld(WorldDto world)
+    {
+        SelectedWorld = world;
+        await PreloadWorldDataAsync(world);
+        SelectedNarrative = SelectedWorld.Narratives.FirstOrDefault();
+    }
+    private void OnChangeNarrativ(NarrativeDto narrative)
+    {
+        SelectedNarrative = narrative;
+    }
+    private async Task NextPage()
+    {
+        pageNumber++;
+        var worldDtos = await WorldManager.GetPageAsyc(pageNumber,pageSize,true);
+        if(worldDtos.Count != 0 && worldDtos != null)
+        {
+            Worlds = worldDtos;
+            foreach(var itemworld in Worlds)
+            {
+                await PreloadWorldDataAsync(itemworld);
+
+            } 
+            SelectedWorld = Worlds.FirstOrDefault();
+
+            if(SelectedNarrative == null)
+            {
+                SelectedNarrative = new NarrativeDto();
+            }
+            else
+            {    
+            SelectedNarrative = SelectedWorld.Narratives.FirstOrDefault();
+            }
+        }
+        else
+        {
+            pageNumber--;
+        }       
+        SelectedWorld = Worlds.FirstOrDefault();
+    }
+    private async Task PreviousPage()
+    {
+        if(pageNumber > 1)
+        {
+            pageNumber--;
+
+            Worlds = await WorldManager.GetPageAsyc(pageNumber,pageSize,true);
+            foreach(var itemworld in Worlds)
+            {
+                await PreloadWorldDataAsync(itemworld);
+            }
+            SelectedWorld = Worlds.FirstOrDefault();
+            SelectedNarrative = SelectedWorld.Narratives.FirstOrDefault();
+        }
+    }
+
+    // Not implemented yet  
+    [JSInvokable]
+    public async Task OnWindowResize()
+    {
+        await SetWorldsToRenderCount();
+    }
+    private async Task SetWorldsToRenderCount()
+    {
+        var mainElementWidth = await JSRuntime.InvokeAsync<int>("getWindowWidth");
+        pageSize = (int)Math.Floor(mainElementWidth / 300.0);
+        StateHasChanged();
+    }
+}
+
+@* JavaScript function to get window width and handle resize *@
+<script>
+    window.getWindowWidth = function () {
+        return window.innerWidth;
+    };
+
+
+    window.addResizeListener = function (dotNetHelper) {
+        window.addEventListener('resize', function () {
+            dotNetHelper.invokeMethodAsync('OnWindowResize');
+        });
+    };
+</script>
+
+

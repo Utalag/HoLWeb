@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HeroesOfLegends.Business.Managers.GenericManager&lt;T, TDto&gt;">
+    <Position X="18.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAkIEIgAAiBBAAIAAAAAIQAAQAAAAIAAAAAQA=</HashCode>
+      <FileName>Managers\GenericManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Managers.CharacterManager">
+    <Position X="18" Y="6.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAIACAAAAAAAAAAAACAIAAAAAACAIAAAAAAA=</HashCode>
+      <FileName>Managers\CharacterManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Managers.CharacterStatManager">
+    <Position X="15" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Managers\CharacterStatManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Managers.NarrativeManager">
+    <Position X="13.5" Y="6.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Managers\NarrativeManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Managers.ProfessionManager">
+    <Position X="20.75" Y="6.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEIECAAAAAAAAIAAAAAIAAAAAgAAAAABAAAA=</HashCode>
+      <FileName>Managers\ProfessionManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Managers.ProfessionSkillManager">
+    <Position X="24.25" Y="6" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQqAAAAAAACAAAAAAEgAAAAAAAAUAAAAAA=</HashCode>
+      <FileName>Managers\ProfessionSkillManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Managers.RaceManager">
+    <Position X="15.75" Y="6.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Managers\RaceManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Managers.RaceStatManager">
+    <Position X="15" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Managers\RaceStatManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Managers.SpecificSkillManager">
+    <Position X="24" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Managers\SpecificSkillManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Managers.WorldManager">
+    <Position X="10.25" Y="4.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEIEJAAAAABCAIAAAAAAAAAAAAAAEIAIAAAA=</HashCode>
+      <FileName>Managers\WorldManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Managers.ThumbImgManagers.ThumbImgCharacterManager" Collapsed="true">
+    <Position X="21.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Managers\ThumbImgManagers\ThumbImgCharacterManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Right" Position="0.237" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Managers.ThumbImgManagers.ThumbImgNarrativeManager" Collapsed="true">
+    <Position X="21.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Managers\ThumbImgManagers\ThumbImgNarrativeManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Right" Position="0.352" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Managers.ThumbImgManagers.ThumbImgRaceManager" Collapsed="true">
+    <Position X="21.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Managers\ThumbImgManagers\ThumbImgRaceManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Right" Position="0.362" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Managers.ThumbImgManagers.ThumbImgWorldManager" Collapsed="true">
+    <Position X="21.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Managers\ThumbImgManagers\ThumbImgWorldManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Right" Position="0.331" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

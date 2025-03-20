@@ -1,0 +1,31 @@
+﻿@using HoLWeb.Components.Layout
+@using Microsoft.AspNetCore.Components.Sections
+@using HoLWeb.Components.WorldPages.WorldComponents
+@inherits LayoutComponentBase
+@layout MainLayout
+
+
+<h1 class="text-center">World Lyout</h1>
+
+<div class="row">
+
+    <section class="col-12 g-1" style="border:dotted">
+        <SectionOutlet SectionName="WorldSelector"></SectionOutlet>
+    </section>
+
+    <aside class="col-3 g-1" style="border:dotted">
+        <SectionOutlet SectionName="Notebook" ></SectionOutlet>
+    </aside>
+
+    <section class="col-6 g-1" style="border:dotted">
+        @Body
+    </section>
+
+    <aside class="col-3 g-1" style="border:dotted">
+        <SectionOutlet SectionName="Chat" ></SectionOutlet>
+    </aside>
+
+</div>
+
+
+

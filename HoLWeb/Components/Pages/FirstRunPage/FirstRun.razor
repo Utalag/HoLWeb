@@ -1,0 +1,130 @@
+﻿@page "/firstrun"
+@using System.ComponentModel.DataAnnotations
+@using System.Text
+@using System.Text.Encodings.Web
+@using HoLWeb.Components.Account.Shared
+@using HoLWeb.DataLayer.Database
+@using HoLWeb.DataLayer.Models.IdentityModels
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.WebUtilities
+
+@inject UserManager<ApplicationUser> UserManager
+@inject IUserStore<ApplicationUser> UserStore
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IEmailSender<ApplicationUser> EmailSender
+@inject NavigationManager NavigationManager
+
+<h1>První spuštění</h1>
+<div class="row">
+    <div class="col-lg-6">
+        <StatusMessage Message="@Message" />
+        <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
+            <DataAnnotationsValidator />
+            <h2>Create a new account.</h2>
+            <hr />
+            <ValidationSummary class="text-danger" role="alert" />
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label for="Input.Email">Email</label>
+                <ValidationMessage For="() => Input.Email" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label for="Input.Password">Password</label>
+                <ValidationMessage For="() => Input.Password" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText type="password" @bind-Value="Input.ConfirmPassword" id="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label for="Input.ConfirmPassword">Confirm Password</label>
+                <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
+            </div>
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+        </EditForm>
+    </div>
+    <div class="col-lg-4 col-lg-offset-2">
+        <section>
+            <h3>Informace k prvnímu spuštění.</h3>
+            <hr /><p>Vítejte v programu! Pro zajištění bezpečnosti a efektivní správy je potřeba zadat údaje prvního uživatele, který bude mít roli administrátora.</p>
+            <p>Prosíme, vyplňte následující informace:</p>
+            <ul>
+                <li>Emailová adresa:</li>
+                <li>Heslo:</li>
+                <li>Potvrzení hesla:</li>
+            </ul>
+            <p>Po vyplnění údajů a potvrzení vytvoříte účet, který bude mít administrátorská práva a umožní spravovat přístupy a nastavení programu.</p>
+            <p>Pokud máte jakékoliv dotazy nebo potřebujete pomoc, neváhejte mě kontaktovat na <a href="mailto:krejci8269@gmail.com">krejci8269@gmail.com</a>.</p>
+            <p><strong>Upozornění:</strong> Tato stránka se po registraci znovu neukáže.</p>
+        </section>
+    </div>
+</div>
+
+
+        @code {
+    private IEnumerable<IdentityError>? identityErrors;
+
+    [SupplyParameterFromForm]
+    private InputModel Input { get; set; } = new();
+
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
+
+    protected override void OnInitialized()
+    {
+        if (UserManager.Users.Any())
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
+
+
+    public async Task RegisterUser(EditContext editContext)
+    {
+        //var user = CreateUser();
+
+        var user = new ApplicationUser
+            {
+                UserName = Input.Email,
+                Email = Input.Email,
+                EmailConfirmed = true
+            };
+
+        var result = await UserManager.CreateAsync(user, Input.Password);
+
+
+        if (!result.Succeeded)
+        {
+            identityErrors = result.Errors;
+            return;
+        }
+
+        await UserManager.AddToRoleAsync(user, ApplicationRole.Admin);
+
+        await SignInManager.SignInAsync(user, isPersistent: false);
+
+        NavigationManager.NavigateTo("/");
+    }
+
+
+    private sealed class InputModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; } = "";
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; } = "";
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; } = "";
+    }
+}

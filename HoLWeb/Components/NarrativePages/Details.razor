@@ -1,0 +1,52 @@
+﻿@page "/narrative/details"
+
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>Narrative</h2>
+    <hr />
+    @if (narrative is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">NarrativeName</dt>
+            <dd class="col-sm-10">@narrative.NarrativeName</dd>
+            <dt class="col-sm-2">NarrativeDescription</dt>
+            <dd class="col-sm-10">@narrative.NarrativeDescription</dd>
+            <dt class="col-sm-2">Era</dt>
+            <dd class="col-sm-10">@narrative.Era</dd>
+            <dt class="col-sm-2">Year</dt>
+            <dd class="col-sm-10">@narrative.Year</dd>
+            <dt class="col-sm-2">WorldId</dt>
+            <dd class="col-sm-10">@narrative.WorldId</dd>
+            <dt class="col-sm-2">PJ</dt>
+            <dd class="col-sm-10">@narrative.GameMasterGuid</dd>
+        </dl>
+        <div>
+            <a href="@($"/narrative/edit?id={narrative.Id}")">Edit</a> |
+            <a href="@($"/narrative")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private NarrativeDto? narrative;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        narrative = await NarrativeManager.GetDateByIdAsync(Id);
+
+        if (narrative is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

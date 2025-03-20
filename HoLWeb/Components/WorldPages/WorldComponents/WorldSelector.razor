@@ -1,0 +1,97 @@
+﻿@using HoLWeb.BusinessLayer.Models
+@using HoLWeb.BusinessLayer.Interfaces
+@using Microsoft.JSInterop;
+@using System.Threading.Tasks;
+
+@rendermode InteractiveServer
+@inject IWorldManager WorldManager
+@inject IJSRuntime JSRuntime
+
+
+<!--Světy-->
+<div class="d-flex justify-content-around">
+    <button @onclick="PreviousPage">Previous</button>
+    @if(Worlds != null)
+    {
+        var worldsToRender = Worlds.Skip(pageNumber).Take(pageSize);
+        foreach(var world in worldsToRender)
+        {
+            <div @onclick="()=>SelectedWorld=world">
+                <CascadingValue Value="@world">
+                    <WorldImg ClassType=@world.GetType().ToString() />
+                </CascadingValue>
+            </div>
+        }
+        <button @onclick="NextPage">Next</button>
+    }
+    else
+    {
+        <p><em>Loading...</em></p>
+    }
+</div>
+<hr />
+<WorldDataNavigation World="@SelectedWorld"/>
+
+
+<p>seznam ras</p>
+@foreach(var raceid in SelectedWorld.RaceIds)
+{
+    <div>
+        @raceid
+    </div>
+}
+
+
+@code {
+    private int pageNumber = 0;
+    private int pageSize = 3;
+    private int windowWidth = 0;
+
+    private ICollection<WorldDto>? Worlds { get; set; } = new List<WorldDto>();
+    private WorldDto SelectedWorld { get; set; } = new WorldDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Worlds = await WorldManager.GetAllDataAsync();
+
+        SelectedWorld = Worlds.FirstOrDefault();
+         await GetWindowWidth();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            await GetWindowWidth();
+
+        }
+    }
+
+    [JSInvokable]
+    private async Task GetWindowWidth()
+    {
+        var windowWidth = await JSRuntime.InvokeAsync<int>("getWindowWidth");
+        pageSize = (int)Math.Floor(windowWidth / 300.0);
+        StateHasChanged();
+    }
+
+    private void NextPage()
+    {
+        var pageincrement = pageNumber + 1;
+        pageNumber = (pageincrement > Worlds.Count) ? Worlds.Count : pageNumber+1;
+        StateHasChanged();
+    }
+
+    private void PreviousPage()
+    {
+        var pageincrement = pageNumber - 1;
+        pageNumber = (pageincrement < 0) ? 0 : pageNumber-1;
+        StateHasChanged();
+    }
+}
+<script>
+  
+     window.getWindowWidth = function () {
+        return window.innerWidth;
+    };
+</script>

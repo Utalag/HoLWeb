@@ -1,0 +1,114 @@
+﻿@page "/races/create"
+@using Microsoft.EntityFrameworkCore
+@using HoLWeb.DataLayer.Models
+@inject IDbContextFactory<HoLWeb.DataLayer.Database.HoLWebDbContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h2>Race</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="Race" OnValidSubmit="AddRace" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" role="alert"/>
+            <div class="mb-3">
+                <label for="racename" class="form-label">RaceName:</label> 
+                <InputText id="racename" @bind-Value="Race.RaceName" class="form-control" /> 
+                <ValidationMessage For="() => Race.RaceName" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="racedescription" class="form-label">RaceDescription:</label> 
+                <InputText id="racedescription" @bind-Value="Race.RaceDescription" class="form-control" /> 
+                <ValidationMessage For="() => Race.RaceDescription" class="text-danger" /> 
+            </div>        
+   @*          <div class="mb-3">
+                <label for="racesize" class="form-label">RaceSize:</label> 
+                <InputText id="racesize" @bind-Value="Race.RaceSize" class="form-control" /> 
+                <ValidationMessage For="() => Race.RaceSize" class="text-danger" /> 
+            </div> *@        
+            <div class="mb-3">
+                <label for="mobility" class="form-label">Mobility:</label> 
+                <InputNumber id="mobility" @bind-Value="Race.Mobility" class="form-control" /> 
+                <ValidationMessage For="() => Race.Mobility" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="specialabilities" class="form-label">SpecialAbilities:</label> 
+                <InputText id="specialabilities" @bind-Value="Race.SpecialAbilities" class="form-control" /> 
+                <ValidationMessage For="() => Race.SpecialAbilities" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="specialabilitiesdescription" class="form-label">SpecialAbilitiesDescription:</label> 
+                <InputText id="specialabilitiesdescription" @bind-Value="Race.SpecialAbilitiesDescription" class="form-control" /> 
+                <ValidationMessage For="() => Race.SpecialAbilitiesDescription" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="weightmin" class="form-label">WeightMin:</label> 
+                <InputNumber id="weightmin" @bind-Value="Race.WeightMin" class="form-control" /> 
+                <ValidationMessage For="() => Race.WeightMin" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="weightmax" class="form-label">WeightMax:</label> 
+                <InputNumber id="weightmax" @bind-Value="Race.WeightMax" class="form-control" /> 
+                <ValidationMessage For="() => Race.WeightMax" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="bodyheightmin" class="form-label">BodyHeightMin:</label> 
+                <InputNumber id="bodyheightmin" @bind-Value="Race.BodyHeightMin" class="form-control" /> 
+                <ValidationMessage For="() => Race.BodyHeightMin" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="bodyheightmax" class="form-label">BodyHeightMax:</label> 
+                <InputNumber id="bodyheightmax" @bind-Value="Race.BodyHeightMax" class="form-control" /> 
+                <ValidationMessage For="() => Race.BodyHeightMax" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="strengthstatid" class="form-label">StrengthStatId:</label> 
+                <InputNumber id="strengthstatid" @bind-Value="Race.StrengthStatId" class="form-control" /> 
+                <ValidationMessage For="() => Race.StrengthStatId" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="agilitystatid" class="form-label">AgilityStatId:</label> 
+                <InputNumber id="agilitystatid" @bind-Value="Race.AgilityStatId" class="form-control" /> 
+                <ValidationMessage For="() => Race.AgilityStatId" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="constitutionstatid" class="form-label">ConstitutionStatId:</label> 
+                <InputNumber id="constitutionstatid" @bind-Value="Race.ConstitutionStatId" class="form-control" /> 
+                <ValidationMessage For="() => Race.ConstitutionStatId" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="intelligencestatid" class="form-label">IntelligenceStatId:</label> 
+                <InputNumber id="intelligencestatid" @bind-Value="Race.IntelligenceStatId" class="form-control" /> 
+                <ValidationMessage For="() => Race.IntelligenceStatId" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="charismastatid" class="form-label">CharismaStatId:</label> 
+                <InputNumber id="charismastatid" @bind-Value="Race.CharismaStatId" class="form-control" /> 
+                <ValidationMessage For="() => Race.CharismaStatId" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/races">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private Race Race { get; set; } = new();
+
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task AddRace()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Races.Add(Race);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/races");
+    }
+}

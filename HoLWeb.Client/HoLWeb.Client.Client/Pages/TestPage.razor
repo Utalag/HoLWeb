@@ -1,0 +1,31 @@
+﻿@page "/testpage"
+@using HoLWeb.BusinessLayer.Models
+@inject HttpClient Http
+
+
+<h3>TestPage</h3>
+
+@if (worldData == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ul>
+        @foreach (var world in worldData)
+        {
+            <li>@world.WorldName</li>
+        }
+    </ul>
+}
+
+@code {
+    private IEnumerable<WorldDto> worldData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //worldData = await Http.GetFromJsonAsync<IEnumerable<WorldDto>>("api/WorldApi");
+    }
+
+
+}

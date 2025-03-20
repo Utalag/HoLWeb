@@ -1,0 +1,89 @@
+﻿@using HoLWeb.BusinessLayer.Models
+@using HoLWeb.BusinessLayer.Interfaces.IThumbImgManagers
+@inject IThumbImgWorldManager ThumbWorldManager
+@inject IThumbImgRaceManager ThumbRaceManager
+@inject IThumbImgNarrativeManager ThumbNarrativeManager
+@inject IThumbImgCharacterManager ThumbCharacterManager
+
+
+
+<div class="img-Border" style="background-image: url(@baseImage); width:@(Width)px; height:@(Height)px; background-position: @(thumb.X)% @(thumb.Y)%; background-size: @(thumb.ScaleImage)%;">
+
+</div>
+
+
+@code {
+    [Parameter] public int ThumbCharacterId { get; set; } = 0;
+    [Parameter] public int ThumbWorldId { get; set; } = 0;
+    [Parameter] public int ThumbNarrativeId { get; set; } = 0;
+    [Parameter] public int ThumbRaceId { get; set; } = 0;
+    [Parameter] public int Width { get; set; } = 300;
+    [Parameter] public int Height { get; set; } = 300;
+
+    public ThumbnailImageDto thumb = new ThumbnailImageDto();
+
+    private string baseImage = "Images/PlaceholderImg.png";
+
+    protected override void OnInitialized()
+    {
+        if (ThumbWorldId != 0) 
+        {
+            thumb = ThumbWorldManager.GetDateById(ThumbWorldId);
+            SetImageFormDb();
+        }
+        else if (ThumbCharacterId != 0) 
+        {
+            thumb = ThumbCharacterManager.GetDateById(ThumbCharacterId);
+            SetImageFormDb();
+        }
+        else if(ThumbNarrativeId != 0) 
+        {
+            thumb = ThumbNarrativeManager.GetDateById(ThumbNarrativeId);
+            SetImageFormDb();
+        }
+        else if(ThumbRaceId != 0) 
+        {
+            thumb = ThumbRaceManager.GetDateById(ThumbRaceId);
+            SetImageFormDb();
+        }
+        else
+        {
+            baseImage = "Images/PlaceholderImg.png";
+            thumb = new ThumbnailImageDto();
+        }
+
+        
+    }
+    protected void SetImageFormDb()
+    {
+        if (thumb != null)
+        {
+            baseImage = $"data:image/webp;base64,{Convert.ToBase64String(thumb.ImageData)}";
+        }
+        else
+        {
+            baseImage = "Images/PlaceholderImg.png";
+            thumb = new ThumbnailImageDto();
+        }
+    }
+}
+
+<style>
+
+
+    .img-Border {
+        border: 5px solid black;
+        border-radius: 50%;
+        background-image: url( @baseImage );
+        background-repeat: no-repeat;
+        overflow: hidden;
+        background-position: @($"{thumb.X}% {thumb.Y}%");
+        background-size: @($"{thumb.ScaleImage}%");
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+
+</style>

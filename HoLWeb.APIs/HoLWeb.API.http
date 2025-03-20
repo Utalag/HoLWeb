@@ -1,0 +1,7 @@
+﻿@HoLWeb.API_HostAddress = 
+
+
+GET
+GET {{HoLWeb.API_HostAddress}}/api/WorldApi
+
+###

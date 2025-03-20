@@ -1,0 +1,84 @@
+﻿@page "/narrative/edit"
+
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h2>Narrative</h2>
+<hr />
+@if (Narrative is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="Narrative" OnValidSubmit="UpdateNarrative" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary role="alert"/>
+                <input type="hidden" name="Narrative.Id" value="@Narrative.Id" />
+                <div class="mb-3">
+                    <label for="narrativename" class="form-label">NarrativeName:</label>
+                    <InputText id="narrativename" @bind-Value="Narrative.NarrativeName" class="form-control" />
+                    <ValidationMessage For="() => Narrative.NarrativeName" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="narrativedescription" class="form-label">NarrativeDescription:</label>
+                    <InputText id="narrativedescription" @bind-Value="Narrative.NarrativeDescription" class="form-control" />
+                    <ValidationMessage For="() => Narrative.NarrativeDescription" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="era" class="form-label">Era:</label>
+                    <InputText id="era" @bind-Value="Narrative.Era" class="form-control" />
+                    <ValidationMessage For="() => Narrative.Era" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="year" class="form-label">Year:</label>
+                    <InputNumber id="year" @bind-Value="Narrative.Year" class="form-control" />
+                    <ValidationMessage For="() => Narrative.Year" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="worldid" class="form-label">WorldId:</label>
+                    <InputNumber id="worldid" @bind-Value="Narrative.WorldId" class="form-control" />
+                    <ValidationMessage For="() => Narrative.WorldId" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<h3> !! manuální přiřazení uživatele jako GameMastra !!</h3>
+
+<div>
+    <a href="/narratives">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    private int Id { get; set; } //wordlId from filter
+
+    [SupplyParameterFromForm]
+    private NarrativeDto? Narrative { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Narrative = await NarrativeManager.GetDateByIdAsync(Id);
+
+        if (Narrative is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+    private async Task UpdateNarrative()
+    {
+
+        await NarrativeManager.UpdateDataAsync(Narrative,Id);
+        NavigationManager.NavigateTo("/narratives");
+    }
+}
+
+
+    <!-- Přidat id pro Gm pokud neni ještě vyplněno -->

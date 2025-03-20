@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="HeroesOfLegends.Business.Models.CharacterDto">
+    <Position X="10.75" Y="2" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAKAAgAAAAgCIgBQEAAAJYABJBIABEAABAqAAAFACA=</HashCode>
+      <FileName>Models\CharacterDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Models.CharacterStatDto" BaseTypeListCollapsed="true">
+    <Position X="10.75" Y="9" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAEACAAAAAACQAAgAAAAAABACIAQAAABA=</HashCode>
+      <FileName>Models\CharacterStatDto.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Models.NarrativeDto">
+    <Position X="4.5" Y="2" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAABAAAACAAAAAAAIAAAAAEAAgAAAAAAAUAAAA=</HashCode>
+      <FileName>Models\NarrativeDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Models.ProfessionDto">
+    <Position X="14" Y="2" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAiAAAAASAgAAAAAiggBJQAQAQgAAABAAAAAQAACAA=</HashCode>
+      <FileName>Models\ProfessionDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Models.ProfessionSkillDto">
+    <Position X="14" Y="7" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AgFCAEAAAAAAEAABCQAAAAAAAAJAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ProfssionSkillDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Models.RaceDto">
+    <Position X="7.5" Y="2" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIEAAAAAAEAEAAogJqAAAAAABEAABAoYAAAEJg=</HashCode>
+      <FileName>Models\RaceDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Models.RaceStatDto" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="7.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAEAAAAAAAAAQAAAAAAAAAAACIAQAAAAA=</HashCode>
+      <FileName>Models\RaceStatDto.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Models.SpecificSkillDto" BaseTypeListCollapsed="true">
+    <Position X="14" Y="10.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AFACAEAAAAAAAAAICgAAAAAAAAAABAABAAAIAAAAAJA=</HashCode>
+      <FileName>Models\SpecificSkillDto.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Models.StaticData">
+    <Position X="19.75" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAICAAAAACAAABAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\StaticData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Models.ThumbnailImageDto">
+    <Position X="17.25" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAACAAAAAAAAAAIAEAAAAIAAUAAABAAAAAgIAAEBYAA=</HashCode>
+      <FileName>Models\ThumbnailImageDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Models.WorldDto">
+    <Position X="1.5" Y="2" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAACQAAAAAAAAAAAAAAAIJAAEAgEAAAAABAAAABAAAA=</HashCode>
+      <FileName>Models\WorldDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Business.Models.AutoMapperConfigurationProfile">
+    <Position X="23.25" Y="5.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>QgAAEAAAAAAAAEAAAKIACAAgAAAAEAAAAAAAAAEAAAA=</HashCode>
+      <FileName>AutoMapperConfigurationProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

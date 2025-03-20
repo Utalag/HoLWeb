@@ -1,0 +1,38 @@
+﻿@page "/worldsTest"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using HoLWeb.BusinessLayer.Models
+@using HoLWeb.BusinessLayer.Interfaces
+
+@inject IWorldManager worldRepository
+
+<PageTitle>Index</PageTitle>
+
+<h1>World from repository</h1>
+
+<p>
+    <a href="worlds/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="Worlds">
+    <PropertyColumn Property="world => world.WorldName" />
+    <PropertyColumn Property="world => world.WorldDescription" />
+    <PropertyColumn Property="world => world.AmountOfMagicInTheWorld" />
+    <PropertyColumn title="Races" Property="world=> string.Join('|',world.RaceIds.ToList())" />
+    <PropertyColumn Property="world => world.GameMasterId" />
+
+    <TemplateColumn Context="world">
+        <a href="@($"worldsTest/edit?id={world.Id}")">Edit</a> |
+        <a href="@($"worlds/details?id={world.Id}")">Details</a> |
+        <a href="@($"worlds/delete?id={world.Id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private IQueryable<WorldDto> Worlds { get; set; } = Enumerable.Empty<WorldDto>().AsQueryable();
+
+    protected override void OnInitialized()
+    {
+        Worlds = worldRepository.GetAllData().AsQueryable();
+    }
+}

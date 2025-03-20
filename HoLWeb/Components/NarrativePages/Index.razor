@@ -1,0 +1,43 @@
+﻿@page "/narrative"
+
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="narrative/create">Create New</a>
+</p>
+
+<QuickGrid Class="table"  Items="context">
+    <PropertyColumn Property="narrative => narrative.NarrativeName" />
+    <PropertyColumn Property="narrative => narrative.NarrativeDescription" />
+    <PropertyColumn Property="narrative => narrative.Era" />
+    <PropertyColumn Property="narrative => narrative.Year" />
+    <PropertyColumn Property="narrative => narrative.WorldId" />
+    <PropertyColumn Property="narrative => narrative.GameMasterGuid" />
+
+
+
+    <TemplateColumn Context="narrative">
+        <a href="@($"narrative/edit?id={narrative.Id}")">Edit</a> |
+        <a href="@($"narrative/details?id={narrative.Id}")">Details</a> |
+        <a href="@($"narrative/delete?id={narrative.Id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private IQueryable<NarrativeDto> context = default!;
+    
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var data = await NarrativeManager.GetAllDataAsync();
+        
+        context = data.Where(i => i.WorldId == Id).AsQueryable();
+    }
+
+}

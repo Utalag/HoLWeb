@@ -1,0 +1,204 @@
+﻿@page "/Worlds/WorldDetail"
+
+@using Microsoft.EntityFrameworkCore
+@using HoLWeb.BusinessLayer.Models
+@inject NavigationManager NavigationManager
+@using HoLWeb.BusinessLayer.Interfaces
+@using HoLWeb.Components.Account.Shared
+@rendermode InteractiveServer
+@inject IWorldManager worldManager
+@inject IRaceManager racemanager
+@inject INarrativeManager narrativeManager
+
+
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h2>World</h2>
+<hr />
+@if(WorldDto is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h1>@message</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="WorldDto" OnValidSubmit="ValidSubmit" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary role="alert" />
+                <input type="hidden" name="World.Id" value="@WorldDto.Id" />
+                <div class="mb-3">
+                    <label for="worldname" class="form-label">WorldName:</label>
+                    <InputText id="worldname" @bind-Value="WorldDto.WorldName" class="form-control" />
+                    <ValidationMessage For="() => WorldDto.WorldName" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="worlddescription" class="form-label">WorldDescription:</label>
+                    <InputText id="worlddescription" @bind-Value="WorldDto.WorldDescription" class="form-control" />
+                    <ValidationMessage For="() => WorldDto.WorldDescription" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="amountofmagicintheworld" class="form-label">AmountOfMagicInTheWorld:</label>
+                    <InputNumber id="amountofmagicintheworld" @bind-Value="WorldDto.AmountOfMagicInTheWorld" class="form-control" />
+                    <ValidationMessage For="() => WorldDto.AmountOfMagicInTheWorld" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+
+<div class="row">
+    <!--Race selector-->
+    <div class="col-4" style="border:dotted">
+        <div class="d-flex" >
+            <div class="">
+                <h3>Rasy ve světě</h3>
+                <div class="form-group">
+                    <label>Races</label>
+                    @foreach(var race in selectRaces)
+                    {
+                        if(race is null)
+                        {
+                            <p>ŽÁDNÉ RASY</p>
+                        }
+                        else
+                        {
+                            <div>
+                                <button class="btn btn-outline-success" @onclick="()=>UnSelectedRace(race)">@race.RaceName</button>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="">
+                <h3>Dostupné rasy</h3>
+                <div class="form-group">
+                    <label>Races</label>
+                    @foreach(var race in remainingRaces.OrderBy(i => i.Id))
+                    {
+                        if(race is null)
+                        {
+                            <p>Opuštěný svět bez ras</p>
+                        }
+                        else
+                        {
+                            <div>
+                                <button class="btn btn-outline-info" @onclick="()=>SelectedRace(race)">@race.RaceName</button>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-4" style="border:dotted">
+        <!-- Narrative selector-->
+        <ul>
+            @foreach(var narrativ in allNarratives)
+            {
+                <li>@narrativ.NarrativeName
+                    <a href="@($"narrative/edit?id={narrativ.Id}")">Edit</a> |
+                    <a href="@($"narrative/details?id={narrativ.Id}")">Details</a> |
+                    <a href="@($"narrative/delete?id={narrativ.Id}")">Delete</a>
+                </li>
+            }
+            <li><a href="@($"narrative/create")">Nový</a></li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+<div>
+    <a href="/worlds">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    private int Id { get; set; } = 0;
+    private string? message;
+    [SupplyParameterFromForm]
+    private WorldDto? WorldDto { get; set; }
+    private List<RaceDto> remainingRaces = new List<RaceDto>();
+    private List<RaceDto> selectRaces = new List<RaceDto>();
+    private List<RaceDto> allRace = new List<RaceDto>();
+
+    private List<NarrativeDto> allNarratives = new List<NarrativeDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        if(Id == 0)
+        {
+            WorldDto = new WorldDto();
+        }
+        else
+        {
+            WorldDto ??= await worldManager.GetDateByIdAsync(Id,true);
+            var raceIds = WorldDto.RaceIds.ToList();
+            selectRaces.AddRange(await racemanager.GetDataByIdsAsync(raceIds));
+            var narrativeIds = WorldDto.NarrativeIds.ToList();
+            allNarratives.AddRange(await narrativeManager.GetDataByIdsAsync(narrativeIds,false));
+        }
+
+        allRace.AddRange(await racemanager.GetAllDataAsync());
+        foreach(var race in allRace)
+        {
+            if(!selectRaces.Select(i => i.Id).Contains(race.Id))
+            {
+                remainingRaces.Add(race);
+            }
+        }
+    }
+
+    private async Task Messages(string message)
+    {
+        this.message = message;
+        StateHasChanged();
+        await Task.Delay(2000);
+        this.message = string.Empty;
+        StateHasChanged();
+    }
+
+
+
+    private void SelectedRace(RaceDto race)
+    {
+        selectRaces.Add(race);
+        remainingRaces.Remove(race);
+    }
+
+    private void UnSelectedRace(RaceDto race)
+    {
+        selectRaces.Remove(race);
+        remainingRaces.Add(race);
+    }
+
+    private async Task ValidSubmit()
+    {
+        WorldDto.Races = selectRaces;
+        WorldDto.RaceIds = selectRaces.Select(i => i.Id).ToList();
+
+        if(Id > 0)
+        {
+            await worldManager.UpdateDataAsync(WorldDto,Id);
+            await Messages("Data updated");
+        }
+        else
+        {
+            await worldManager.AddDataAsync(WorldDto);
+            await Messages("Data added");
+        }
+        //NavigationManager.NavigateTo("/worlds");
+    }
+}

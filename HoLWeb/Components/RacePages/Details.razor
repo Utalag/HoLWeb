@@ -1,0 +1,74 @@
+﻿@page "/races/details"
+@using Microsoft.EntityFrameworkCore
+@using HoLWeb.DataLayer.Models
+@inject IDbContextFactory<HoLWeb.DataLayer.Database.HoLWebDbContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>Race</h2>
+    <hr />
+    @if (race is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">RaceName</dt>
+            <dd class="col-sm-10">@race.RaceName</dd>
+            <dt class="col-sm-2">RaceDescription</dt>
+            <dd class="col-sm-10">@race.RaceDescription</dd>
+            <dt class="col-sm-2">RaceSize</dt>
+            <dd class="col-sm-10">@race.RaceSize</dd>
+            <dt class="col-sm-2">Mobility</dt>
+            <dd class="col-sm-10">@race.Mobility</dd>
+            <dt class="col-sm-2">SpecialAbilities</dt>
+            <dd class="col-sm-10">@race.SpecialAbilities</dd>
+            <dt class="col-sm-2">SpecialAbilitiesDescription</dt>
+            <dd class="col-sm-10">@race.SpecialAbilitiesDescription</dd>
+            <dt class="col-sm-2">WeightMin</dt>
+            <dd class="col-sm-10">@race.WeightMin</dd>
+            <dt class="col-sm-2">WeightMax</dt>
+            <dd class="col-sm-10">@race.WeightMax</dd>
+            <dt class="col-sm-2">BodyHeightMin</dt>
+            <dd class="col-sm-10">@race.BodyHeightMin</dd>
+            <dt class="col-sm-2">BodyHeightMax</dt>
+            <dd class="col-sm-10">@race.BodyHeightMax</dd>
+            <dt class="col-sm-2">StrengthStatId</dt>
+            <dd class="col-sm-10">@race.StrengthStatId</dd>
+            <dt class="col-sm-2">AgilityStatId</dt>
+            <dd class="col-sm-10">@race.AgilityStatId</dd>
+            <dt class="col-sm-2">ConstitutionStatId</dt>
+            <dd class="col-sm-10">@race.ConstitutionStatId</dd>
+            <dt class="col-sm-2">IntelligenceStatId</dt>
+            <dd class="col-sm-10">@race.IntelligenceStatId</dd>
+            <dt class="col-sm-2">CharismaStatId</dt>
+            <dd class="col-sm-10">@race.CharismaStatId</dd>
+        </dl>
+        <div>
+            <a href="@($"/races/edit?id={race.Id}")">Edit</a> |
+            <a href="@($"/races")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private Race? race;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        race = await context.Races.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (race is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

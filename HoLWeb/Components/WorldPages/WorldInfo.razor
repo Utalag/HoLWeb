@@ -1,0 +1,65 @@
+﻿@page "/worlds/info"
+@page "/worlds/info/{WorldId:int}"
+
+@using HoLWeb.BusinessLayer.Managers
+@using HoLWeb.BusinessLayer.Models
+@using HoLWeb.BusinessLayer.Interfaces
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Forms
+
+@rendermode InteractiveServer
+
+@inject IWorldManager WorldManager
+@inject IRaceManager RaceManager
+@inject NavigationManager Navigation
+
+<EditForm Enhance Model="@world" OnValidSubmit="HandleValidSubmitAsync" FormName="EditWorld" >
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="worldName">World Name</label>
+        <InputText id="worldName" class="form-control" @bind-Value="world.WorldName" />
+    </div>
+
+    <div class="form-group">
+        <label for="worldDescription">World Description</label>
+        <InputTextArea id="worldDescription" class="form-control" @bind-Value="world.WorldDescription" />
+    </div>
+
+    <div class="form-group">
+        <label for="amountOfMagic">Amount of Magic in the World</label>
+        <InputNumber id="amountOfMagic" class="form-control" @bind-Value="world.AmountOfMagicInTheWorld" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</EditForm>
+
+
+@code {
+    [Parameter] public int WorldId { get; set; }
+    private WorldDto world = new WorldDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (WorldId != 0)
+        {
+            world = await WorldManager.GetDateByIdAsync(WorldId);
+            
+        }
+    }
+
+    private async Task HandleValidSubmitAsync()
+    {
+        if (WorldId != 0)
+        {
+            await WorldManager.UpdateDataAsync(world, WorldId);
+        }
+        else
+        {
+            await WorldManager.AddDataAsync(world);
+        }
+
+        Navigation.NavigateTo("/worlds/info/4");
+    }
+}

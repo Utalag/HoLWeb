@@ -1,0 +1,71 @@
+﻿@page "/narrative/delete"
+@using Microsoft.EntityFrameworkCore
+@using HoLWeb.DataLayer.Models
+@inject IDbContextFactory<HoLWeb.DataLayer.Database.HoLWebDbContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Delete</PageTitle>
+
+<h1>Delete</h1>
+
+<p>Are you sure you want to delete this?</p>
+<div>
+    <h2>Narrative</h2>
+    <hr />
+    @if (narrative is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">NarrativeName</dt>
+            <dd class="col-sm-10">@narrative.NarrativeName</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">NarrativeDescription</dt>
+            <dd class="col-sm-10">@narrative.NarrativeDescription</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Era</dt>
+            <dd class="col-sm-10">@narrative.Era</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Year</dt>
+            <dd class="col-sm-10">@narrative.Year</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">WorldId</dt>
+            <dd class="col-sm-10">@narrative.WorldId</dd>
+        </dl>
+        <EditForm method="post" Model="narrative" OnValidSubmit="DeleteNarrative" FormName="delete" Enhance>
+            <button type="submit" class="btn btn-danger" disabled="@(narrative is null)">Delete</button> |
+            <a href="/narrative">Back to List</a>
+        </EditForm>
+    }
+</div>
+
+@code {
+    private Narrative? narrative;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        narrative = await context.Naratives.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (narrative is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    private async Task DeleteNarrative()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Naratives.Remove(narrative!);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/narrative");
+    }
+}

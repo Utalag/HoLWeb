@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="HeroesOfLegends.Data.Models.SkillsModels.BaseSpecificSkill">
+    <Position X="21" Y="13.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AEACCEAAAAAgAAAICgAAAAQAAAAABAABAAAIAAAAAAA=</HashCode>
+      <FileName>Models\SkillsModels\BaseSpecificSkill.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ProfessionSkill" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.SkillsModels.Healing">
+    <Position X="23" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAIQAAAAAAAEAAAAAAQAAAAAAAAAAAAIAAAAAIA=</HashCode>
+      <FileName>Models\SkillsModels\Healing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.SkillsModels.MultipleAttack">
+    <Position X="21.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAABAAAAAAQAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Models\SkillsModels\MultipleAttack.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.Character">
+    <Position X="6.25" Y="11.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>ACACAAAEAAAgAAEACAAAQJYAEAAAABEAAJCIAAACAAA=</HashCode>
+      <FileName>Models\Character.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Narrative" />
+      <Property Name="NavForStrengthStat" />
+      <Property Name="NavForAgilityStat" />
+      <Property Name="NavForConstitutionStat" />
+      <Property Name="NavForIntelligenceStat" />
+      <Property Name="NavForCharismaStat" />
+      <Property Name="ThumbnailImage" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="IndividualProfessionSkills" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.Narrative">
+    <Position X="11.25" Y="9" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAABBAAACAAAAAAgIQAAAAAAAgAAQAAAAUAAAA=</HashCode>
+      <FileName>Models\Narrative.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ThumbnailImage" />
+      <Property Name="World" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Characters" />
+      <Property Name="ProfessionModules" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.ProfessionSkill">
+    <Position X="16.75" Y="13.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AgFCAEAAAAAAAAABCQAAAAQAAAJAABEAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ProfessionSkill.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="BaseSpecificSkills" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.Race">
+    <Position X="6.25" Y="5.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIEABAAAAEAEAAogJ6AAAAAABEAABAIYAAAEJg=</HashCode>
+      <FileName>Models\Race.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="StrengthStat" />
+      <Property Name="AgilityStat" />
+      <Property Name="ConstitutionStat" />
+      <Property Name="IntelligenceStat" />
+      <Property Name="CharismaStat" />
+      <Property Name="ThumbnailImage" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Worlds" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.World">
+    <Position X="10.75" Y="5.25" Width="2.75" />
+    <AssociationLine Name="Narratives" Type="HeroesOfLegends.Data.Models.Narrative" FixedToPoint="true">
+      <Path>
+        <Point X="13.25" Y="7.382" />
+        <Point X="13.25" Y="9" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACQAAAAAAAAAAAAAAAAJQAAAgAAAAAABAAAABAAAA=</HashCode>
+      <FileName>Models\World.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ThumbnailImage" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Races" />
+      <Property Name="Narratives" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.ThumbModels.ThumbImgCharacter" Collapsed="true">
+    <Position X="18.25" Y="9.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Models\ThumbModels\ThumbImgCharacter.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Character" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.ThumbModels.ThumbImgWorld" Collapsed="true">
+    <Position X="15.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Models\ThumbModels\ThumbImgWorld.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="World" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.ThumbModels.ThumbnailImage">
+    <Position X="17.5" Y="6.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>EAACAAAAAAAAAAIAEAAAAIAAAAAABAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Models\ThumbModels\ThumbnailImage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.ProfessionModul">
+    <Position X="10" Y="13.5" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAiQAAEASAgAAAAAigABBQAAEQAAAARAAAAAQAACAA=</HashCode>
+      <FileName>Models\ProfessionModul.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="BeginnerSkills" />
+      <Property Name="AdvancedSkills" />
+      <Property Name="ExpertSkills" />
+      <Property Name="Narratives" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.GeneralAttributes.GeneralAttribut">
+    <Position X="3" Y="8.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAACAAAAAAAQAAAAAAAAAAACIAQAAAAA=</HashCode>
+      <FileName>Models\GeneralAttributes\GeneralAttribut.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.GeneralAttributes.CharacterStat">
+    <Position X="1.75" Y="12.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAgAAAACQAAgAAAAAABAAAAAAAABA=</HashCode>
+      <FileName>Models\GeneralAttributes\CharacterStat.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.GeneralAttributes.RaceStat">
+    <Position X="2.5" Y="6" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\GeneralAttributes\RaceStat.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.ThumbModels.ThumbImgNarrative">
+    <Position X="14.5" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Models\ThumbModels\ThumbImgNarrative.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Narrative" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="HeroesOfLegends.Data.Models.ThumbModels.ThumbImgRace">
+    <Position X="18.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Models\ThumbModels\ThumbImgRace.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Race" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
