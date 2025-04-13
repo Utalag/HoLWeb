@@ -133,7 +133,20 @@ namespace HoLWeb.BusinessLayer.Managers
         }
         public virtual async Task<TDto> AddDataAsync(TDto dto)
         {
-            return await Task.Run(() => mapper.Map<TDto>(genericRepository.Insert(mapper.Map<T>(dto))));
+            var newEntity = mapper.Map<T>(dto);
+            newEntity = await SetDependenciesAsync(newEntity,dto);
+            try
+            {
+                var created = await genericRepository.InsertAsync(newEntity);
+                return mapper.Map<TDto>(created);
+            }
+            catch(Exception ex)
+            {
+
+                logger.LogError(ex,$"Error while creating {nameof(T)}");
+                throw;
+            }
+
         }
         public virtual async Task<TDto?> DeleteDateAsync(int id,bool dependencies = false)
         {

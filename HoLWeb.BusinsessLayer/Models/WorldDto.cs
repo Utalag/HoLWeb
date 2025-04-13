@@ -20,8 +20,14 @@ namespace HoLWeb.BusinessLayer.Models
         public IList<int> NarrativeIds { get; set; } = new List<int>();
         public int ThumbnailImageId { get; set; }
 
-        public virtual List<Guid>? Players { get; set; } = new List<Guid>();
-        public Guid? GameMasterId { get; set; }
+        //public List<Guid>? PlayersInWorld { get; set; } = new List<Guid>();
+        //public List<Guid>? GameMastersInWorld { get; set; } = new List<Guid>();
+
+        //public List<string>? PlayersNameInWorld { get; set; } = new List<string>();
+        //public List<string>? GameMastersNameInWorld { get; set; } = new List<string>();
+
+        public Guid? FounderId { get; set; }
+        public string FounderUseName { get; set; } = "System";
 
         [JsonIgnore][NotMapped] public List<RaceDto> Races { get; set; } = new List<RaceDto>();
         [JsonIgnore][NotMapped] public List<NarrativeDto> Narratives { get; set; } = new List<NarrativeDto>();

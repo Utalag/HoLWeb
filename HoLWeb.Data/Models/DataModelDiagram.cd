@@ -1,33 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Class Name="HeroesOfLegends.Data.Models.SkillsModels.BaseSpecificSkill">
-    <Position X="21" Y="13.5" Width="3" />
+  <Class Name="HoLWeb.DataLayer.Models.SkillsModels.BaseSpecificSkill">
+    <Position X="22" Y="15" Width="3" />
     <TypeIdentifier>
       <HashCode>AEACCEAAAAAgAAAICgAAAAQAAAAABAABAAAIAAAAAAA=</HashCode>
       <FileName>Models\SkillsModels\BaseSpecificSkill.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="ProfessionSkill" />
+      <Property Name="LevelGroup" />
+      <Property Name="ProfessionClass" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.SkillsModels.Healing">
-    <Position X="23" Y="9.75" Width="1.5" />
+  <Class Name="HoLWeb.DataLayer.Models.SkillsModels.Healing">
+    <Position X="24.25" Y="9.75" Width="2.5" />
     <TypeIdentifier>
       <HashCode>ABAAAAIQAAAAAAAEAAAAAAQAAAAAAAAAAAAIAAAAAIA=</HashCode>
       <FileName>Models\SkillsModels\Healing.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.SkillsModels.MultipleAttack">
-    <Position X="21.25" Y="10.5" Width="1.5" />
+  <Class Name="HoLWeb.DataLayer.Models.SkillsModels.MultipleAttack">
+    <Position X="20.75" Y="10.5" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAABAAABAAAAAAQAAAAAAAAAAAAAAAAAABA=</HashCode>
       <FileName>Models\SkillsModels\MultipleAttack.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CategoryWeapon" />
+    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.Character">
-    <Position X="6.25" Y="11.25" Width="3" />
+  <Class Name="HoLWeb.DataLayer.Models.Character">
+    <Position X="6.25" Y="11.75" Width="3" />
     <TypeIdentifier>
       <HashCode>ACACAAAEAAAgAAEACAAAQJYAEAAAABEAAJCIAAACAAA=</HashCode>
       <FileName>Models\Character.cs</FileName>
@@ -45,35 +50,61 @@
       <Property Name="IndividualProfessionSkills" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.Narrative">
+  <Class Name="HoLWeb.DataLayer.Models.Narrative">
     <Position X="11.25" Y="9" Width="2.75" />
+    <AssociationLine Name="ThumbnailImage" Type="HoLWeb.DataLayer.Models.ThumbModels.ThumbImgNarrative">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.65" Y="-0.586" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAACAAAABBAAACAAAAAAgIQAAAAAAAgAAQAAAAUAAAA=</HashCode>
+      <HashCode>AAACAAAABBAAACAAAAAAoIQAAAAgBggAAQAAAAUAAAE=</HashCode>
       <FileName>Models\Narrative.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="ThumbnailImage" />
-      <Property Name="World" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Characters" />
       <Property Name="ProfessionModules" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.ProfessionSkill">
-    <Position X="16.75" Y="13.5" Width="3" />
+  <Class Name="HoLWeb.DataLayer.Models.ProfessionSkill">
+    <Position X="16.75" Y="14.25" Width="3" />
     <TypeIdentifier>
       <HashCode>AgFCAEAAAAAAAAABCQAAAAQAAAJAABEAAAAAAAAAAAA=</HashCode>
       <FileName>Models\ProfessionSkill.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ProfessionClass" />
+      <Property Name="KnowledgeGroup" />
+      <Property Name="SkillClass" />
+    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="BaseSpecificSkills" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.Race">
+  <Class Name="HoLWeb.DataLayer.Models.Race">
     <Position X="6.25" Y="5.25" Width="2.75" />
+    <AssociationLine Name="ThumbnailImage" Type="HoLWeb.DataLayer.Models.ThumbModels.ThumbImgRace" ManuallyRouted="true">
+      <Path>
+        <Point X="7.625" Y="5.25" />
+        <Point X="7.625" Y="4.312" />
+        <Point X="12.167" Y="4.312" Type="JumpStart" />
+        <Point X="12.333" Y="4.312" Type="JumpEnd" />
+        <Point X="16.979" Y="4.312" Type="JumpStart" />
+        <Point X="17.145" Y="4.312" Type="JumpEnd" />
+        <Point X="17.374" Y="4.312" Type="JumpStart" />
+        <Point X="17.541" Y="4.312" Type="JumpEnd" />
+        <Point X="17.677" Y="4.312" Type="JumpStart" />
+        <Point X="17.843" Y="4.312" Type="JumpEnd" />
+        <Point X="18.125" Y="4.312" />
+        <Point X="18.125" Y="5.366" />
+        <Point X="19.75" Y="5.366" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAIEABAAAAEAEAAogJ6AAAAAABEAABAIYAAAEJg=</HashCode>
+      <HashCode>AAACAAIEABAAAAEAEAAogJ6AAAAAABEAABAAYAAAEJg=</HashCode>
       <FileName>Models\Race.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -83,33 +114,14 @@
       <Property Name="IntelligenceStat" />
       <Property Name="CharismaStat" />
       <Property Name="ThumbnailImage" />
+      <Property Name="RaceSize" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Worlds" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.World">
-    <Position X="10.75" Y="5.25" Width="2.75" />
-    <AssociationLine Name="Narratives" Type="HeroesOfLegends.Data.Models.Narrative" FixedToPoint="true">
-      <Path>
-        <Point X="13.25" Y="7.382" />
-        <Point X="13.25" Y="9" />
-      </Path>
-    </AssociationLine>
-    <TypeIdentifier>
-      <HashCode>AAACQAAAAAAAAAAAAAAAAJQAAAgAAAAAABAAAABAAAA=</HashCode>
-      <FileName>Models\World.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ThumbnailImage" />
-    </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="Races" />
-      <Property Name="Narratives" />
-    </ShowAsCollectionAssociation>
-  </Class>
-  <Class Name="HeroesOfLegends.Data.Models.ThumbModels.ThumbImgCharacter" Collapsed="true">
-    <Position X="18.25" Y="9.75" Width="1.75" />
+  <Class Name="HoLWeb.DataLayer.Models.ThumbModels.ThumbImgCharacter">
+    <Position X="18.25" Y="10.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAACAA=</HashCode>
       <FileName>Models\ThumbModels\ThumbImgCharacter.cs</FileName>
@@ -118,8 +130,8 @@
       <Property Name="Character" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.ThumbModels.ThumbImgWorld" Collapsed="true">
-    <Position X="15.5" Y="6.5" Width="1.5" />
+  <Class Name="HoLWeb.DataLayer.Models.ThumbModels.ThumbImgWorld">
+    <Position X="15.25" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Models\ThumbModels\ThumbImgWorld.cs</FileName>
@@ -128,15 +140,20 @@
       <Property Name="World" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.ThumbModels.ThumbnailImage">
-    <Position X="17.5" Y="6.5" Width="3.25" />
+  <Class Name="HoLWeb.DataLayer.Models.ThumbModels.ThumbnailImage">
+    <Position X="18.75" Y="6.5" Width="3.25" />
     <TypeIdentifier>
       <HashCode>EAACAAAAAAAAAAIAEAAAAIAAAAAABAAAAAAAAAAAYAA=</HashCode>
       <FileName>Models\ThumbModels\ThumbnailImage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.ProfessionModul">
-    <Position X="10" Y="13.5" Width="3.75" />
+  <Class Name="HoLWeb.DataLayer.Models.ProfessionModul">
+    <Position X="10" Y="15" Width="3.75" />
+    <AssociationLine Name="Narratives" Type="HoLWeb.DataLayer.Models.Narrative">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="1.35" Y="0.07" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAiQAAEASAgAAAAAigABBQAAEQAAAARAAAAAQAACAA=</HashCode>
       <FileName>Models\ProfessionModul.cs</FileName>
@@ -148,22 +165,25 @@
       <Property Name="Narratives" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.GeneralAttributes.GeneralAttribut">
-    <Position X="3" Y="8.75" Width="2" />
+  <Class Name="HoLWeb.DataLayer.Models.GeneralAttributes.GeneralAttribut">
+    <Position X="2.75" Y="8.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAACAAAAAAAQAAAAAAAAAAACIAQAAAAA=</HashCode>
       <FileName>Models\GeneralAttributes\GeneralAttribut.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.GeneralAttributes.CharacterStat">
+  <Class Name="HoLWeb.DataLayer.Models.GeneralAttributes.CharacterStat">
     <Position X="1.75" Y="12.25" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAAAAAgAAAACQAAgAAAAAABAAAAAAAABA=</HashCode>
       <FileName>Models\GeneralAttributes\CharacterStat.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PrimarAtribut" />
+    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.GeneralAttributes.RaceStat">
+  <Class Name="HoLWeb.DataLayer.Models.GeneralAttributes.RaceStat">
     <Position X="2.5" Y="6" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
@@ -171,7 +191,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.ThumbModels.ThumbImgNarrative">
+  <Class Name="HoLWeb.DataLayer.Models.ThumbModels.ThumbImgNarrative">
     <Position X="14.5" Y="7.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAIAAAAAAAAA=</HashCode>
@@ -181,8 +201,8 @@
       <Property Name="Narrative" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="HeroesOfLegends.Data.Models.ThumbModels.ThumbImgRace">
-    <Position X="18.5" Y="4.75" Width="1.5" />
+  <Class Name="HoLWeb.DataLayer.Models.ThumbModels.ThumbImgRace">
+    <Position X="19.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
       <FileName>Models\ThumbModels\ThumbImgRace.cs</FileName>
@@ -191,5 +211,74 @@
       <Property Name="Race" />
     </ShowAsAssociation>
   </Class>
+  <Class Name="HoLWeb.DataLayer.Models.World">
+    <Position X="10.75" Y="5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAACQCAAAAAAAAAAAAAAIJQAAEgAAAAAABAAAABAAAE=</HashCode>
+      <FileName>Models\World.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Founder" />
+      <Property Name="ThumbnailImage" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Races" />
+      <Property Name="Narratives" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="HoLWeb.DataLayer.Models.IdentityModels.ApplicationUser">
+    <Position X="15" Y="1.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AEAAAEAAAAAAAIAAAEABAAEAAAAAAAEAAAAAAAAAAAg=</HashCode>
+      <FileName>Models\IdentityModels\ApplicationUser.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="EstablishedWorlds" />
+      <Property Name="NarrativesAsPlayers" />
+      <Property Name="NarrativesAsGameMaster" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Enum Name="HoLWeb.DataLayer.Models.LevelGroupEnum" Collapsed="true">
+    <Position X="20.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIIAAAAAAAAAACAAAAAAgAAAAAAAAACAAAA=</HashCode>
+      <FileName>Models\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HoLWeb.DataLayer.Models.ProfessionClassEnum" Collapsed="true">
+    <Position X="25.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAhAAAAAAaAQAgAAgAAAQAACQgAAAAMCCQAQ=</HashCode>
+      <FileName>Models\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HoLWeb.DataLayer.Models.SkillClassEnum" Collapsed="true">
+    <Position X="20" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIAAAAAAAABAAAAAAAAAAAABAAAAACAQAAACAAQIAg=</HashCode>
+      <FileName>Models\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HoLWeb.DataLayer.Models.EnhancedAtributEnum">
+    <Position X="0.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAFAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Models\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HoLWeb.DataLayer.Models.RaceSizeEnum" Collapsed="true">
+    <Position X="9" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApAEAAAA=</HashCode>
+      <FileName>Models\Race.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="HoLWeb.DataLayer.Models.CategoryWeaponEnum" Collapsed="true">
+    <Position X="20.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAiAAAAAAAACAAAAgAAAAABAABEAAAAAAABAAAAAAQ=</HashCode>
+      <FileName>Models\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

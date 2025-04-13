@@ -18,5 +18,6 @@
         Task DeleteAsync(int id);
         bool ExistsWithId(int id);
         Task<bool> ExistsWithIdAsync(int id);
+        bool ExistsWithIds(List<int> ids);
     }
 }

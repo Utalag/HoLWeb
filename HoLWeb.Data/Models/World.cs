@@ -1,5 +1,4 @@
 ﻿using HoLWeb.DataLayer.Models.IdentityModels;
-using HoLWeb.DataLayer.Models.ThumbModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,32 +7,28 @@ namespace HoLWeb.DataLayer.Models
 
     public class World
     {
-        public World()
-        {
-            // info pro debugování
-            Console.WriteLine("Vytvořená instance");
-        }
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string WorldName { get; set; } = string.Empty;
         public string WorldDescription { get; set; } = string.Empty;
-        [Range(0,100)]
         public int AmountOfMagicInTheWorld { get; set; }
 
 
 
-        public virtual List<Race>? Races { get; set; } = new List<Race>();
-        public virtual List<Narrative>? Narratives { get; set; } = new List<Narrative>();
+        public virtual IList<Race>? Races { get; set; } 
+        public virtual IList<Narrative>? Narratives { get; set; } 
 
-        public virtual ThumbImgWorld? ThumbnailImage { get; set; }
+        //public virtual ThumbnailImage? ThumbnailImage { get; set; }
+        //public int? ThumbnailImageId { get; set; }
 
-        public virtual List<ApplicationUser>? Players { get; set; } = new List<ApplicationUser>();
-        public virtual ApplicationUser? GameMaster { get; set; }
-        public Guid? GameMasterId { get; set; }
+        //public virtual IList<ApplicationUser>? PlayersInWorld { get; set; } 
+        //public virtual IList<ApplicationUser>? GameMastersInWorld { get; set; }
 
-        public List<World> Initial()
+        public virtual ApplicationUser? Founder { get; set; }
+        public Guid? FounderId { get; set; }
+
+        public IList<World> Initial()
         {
 
             return new World[]

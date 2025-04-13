@@ -3,6 +3,7 @@ using HoLWeb.DataLayer.Interfaces;
 using HoLWeb.DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace HoLWeb.DataLayer.Repositories
 {
@@ -135,7 +136,7 @@ namespace HoLWeb.DataLayer.Repositories
         {
             await dbSet.AddAsync(entity);
             await db.SaveChangesAsync();
-            return entity;
+            return entity; 
         }
 
         public TEntity Update(TEntity entity)
@@ -167,9 +168,6 @@ namespace HoLWeb.DataLayer.Repositories
             {
                 ex.Entries.Single().Reload();
             }
-
-
-            await db.SaveChangesAsync();
             return entity;
         }
 
@@ -198,6 +196,31 @@ namespace HoLWeb.DataLayer.Repositories
             return dbSet.Any(e => EF.Property<int>(e,"Id") == id);
         }
 
+        public bool ExistsWithIds(List<int> ids)
+        {
+            int notFoundId = 0;
+            List<string> idsStrings = new();
+            foreach(var id in ids)
+            {
+                if(!ExistsWithId(id))
+                {
+                    notFoundId++;
+                    idsStrings.Add(id.ToString());
+                }
+            }
+            if(notFoundId != ids.Count)
+            {
+                logger.LogWarning($"Not found {notFoundId} Ids");
+                logger.LogWarning($"Not found Ids: {string.Join(",",idsStrings)}");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+
         public async Task<bool> ExistsWithIdAsync(int id)
         {
             return await dbSet.AnyAsync(e => EF.Property<int>(e,"Id") == id);
@@ -214,6 +237,5 @@ namespace HoLWeb.DataLayer.Repositories
             return query;
         }
 
-        //protected abstract IQueryable<TEntity> IncludeDependencies();
     }
 }

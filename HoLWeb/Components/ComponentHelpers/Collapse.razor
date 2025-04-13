@@ -1,0 +1,47 @@
+﻿
+<div class="collapseBorder">
+
+    <h4 class="collapseTitle" style="background-color:@color" @onclick=Toggle>@Title @icon</h4>
+
+    @if(IsExpanded)
+    {
+        <div class="">
+            @ChildContent
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool IsExpanded { get; set; } = false;
+    private string icon = "▾";
+    private string color = "RGB(232, 232, 232)";
+
+    private void Toggle()
+    {
+        IsExpanded = !IsExpanded;
+        if(IsExpanded)
+        {
+            icon = "▵";
+            color = "grey";
+        }
+        else
+        {
+            icon = "▾";
+            color = "RGB(232, 232, 232)";
+        }
+    }
+}
+
+<style>
+    .collapseTitle {
+        border-bottom: 3px solid grey ;
+        text-align: center;
+
+    }
+    .collapseBorder{
+        border: 1px solid grey;
+        border-radius: 10px;
+    }
+</style>

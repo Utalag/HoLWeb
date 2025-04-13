@@ -1,11 +1,10 @@
 ﻿
 
 using AutoMapper;
+using HoLWeb.BusinessLayer.Models;
 using HoLWeb.DataLayer.Models;
 using HoLWeb.DataLayer.Models.GeneralAttributes;
 using HoLWeb.DataLayer.Models.SkillsModels;
-using HoLWeb.DataLayer.Models.ThumbModels;
-using HoLWeb.BusinessLayer.Models;
 
 
 namespace HoLWeb.BusinessLayer
@@ -24,7 +23,6 @@ namespace HoLWeb.BusinessLayer
             Map_SpecificSkill();
             Map_RaceStat();
             Map_CharacterStat();
-            Map_ThumbnailImage();
             Map_ValueTuple();
         }
 
@@ -67,31 +65,37 @@ namespace HoLWeb.BusinessLayer
             CreateMap<World,WorldDto>()
                 .ForMember(m => m.RaceIds,opt => opt.MapFrom(m => m.Races.Select(s => s.Id).ToList()))
                 .ForMember(n => n.NarrativeIds,opt => opt.MapFrom(n => n.Narratives.Select(s => s.Id).ToList()))
-                .ForMember(img => img.ThumbnailImageId,opt => opt.MapFrom(img => img.ThumbnailImage.Id))
+                .ForMember(w => w.FounderUseName,opt => opt.MapFrom(w => w.Founder != null ? w.Founder.NickName : w.Founder.Email))
+                //.ForMember(img => img.ThumbnailImageId,opt => opt.MapFrom(img => img.ThumbnailImage.Id))
 
-                .ForMember(pl=>pl.Players,opt => opt.MapFrom(pl => pl.Players.Select(s => s.Id).ToList()))
-                
+                //.ForMember(pl=>pl.PlayersInWorld,opt => opt.MapFrom(pl => pl.PlayersInWorld.Select(s => s.Id).ToList()))
+                //.ForMember(gm => gm.GameMastersInWorld,opt => opt.MapFrom(gm => gm.GameMastersInWorld.Select(s => s.Id).ToList()))
 
-                .ForMember(ignore => ignore.Narratives,opt=>opt.Ignore())
+                //.ForMember(pl => pl.PlayersNameInWorld,opt => opt.MapFrom(pl => pl.PlayersInWorld.Select(s => s.UserName).ToList()))
+                //.ForMember(gm => gm.GameMastersNameInWorld,opt => opt.MapFrom(gm => gm.GameMastersInWorld.Select(s => s.UserName).ToList()))
+
+                .ForMember(ignore => ignore.Narratives,opt => opt.Ignore())
                 .ForMember(ignore => ignore.Races,opt => opt.Ignore())
                 .ForMember(ignore => ignore.ThumbnailImage,opt => opt.Ignore());
 
             CreateMap<WorldDto,World>()
                 .ForMember(m => m.Narratives,opt => opt.Ignore())
-                .ForMember(m => m.Races,opt => opt.Ignore())
-                .ForMember(m => m.ThumbnailImage,opt => opt.Ignore());
+                .ForMember(m => m.Races,opt => opt.Ignore());
+                //.ForMember(m => m.ThumbnailImage,opt => opt.Ignore());
         }
         private void Map_Narrative()
         {
             CreateMap<Narrative,NarrativeDto>()
                 .ForMember(w => w.WorldId,opt => opt.MapFrom(w => w.World != null ? w.World.Id : 0))
-                .ForMember(i => i.ThumbnailImageId,opt => opt.MapFrom(i => i.ThumbnailImage != null ? i.ThumbnailImage.Id : 0))
+                //.ForMember(i => i.ThumbnailImageId,opt => opt.MapFrom(i => i.ThumbnailImage != null ? i.ThumbnailImage.Id : 0))
                 .ForMember(m => m.RaceIds,opt => opt.MapFrom(m => m.World != null && m.World.Races != null ? m.World.Races.Select(s => s.Id).ToList() : new List<int>()))
                 .ForMember(c => c.CharacterIds,opt => opt.MapFrom(c => c.Characters.Select(s => s.Id)))
                 .ForMember(p => p.ProfessionModulIds,opt => opt.MapFrom(p => p.ProfessionModules.Select(s => s.Id)))
                 .ForMember(p => p.PlayersGuids,opt => opt.MapFrom(p => p.Players.Select(s => s.Id).ToList()))
                 .ForMember(g => g.GameMasterGuid,opt => opt.MapFrom(g => g.GameMaster != null ? g.GameMaster.Id.ToString() : ""))
 
+            
+                .ForMember(ignore => ignore.ThumbnailImage,opt => opt.Ignore())
                 .ForMember(ignore => ignore.Characters,opt => opt.Ignore())
                 .ForMember(ignore => ignore.World,opt => opt.Ignore())
                 .ForMember(ignore => ignore.ProfessionModules,opt => opt.Ignore());
@@ -100,7 +104,9 @@ namespace HoLWeb.BusinessLayer
                 .ForMember(w => w.World,opt => opt.Ignore())
                 .ForMember(c => c.Characters,opt => opt.Ignore())
                 .ForMember(p => p.ProfessionModules,opt => opt.Ignore())
-                .ForMember(t => t.ThumbnailImage,opt => opt.Ignore());
+                //.ForMember(t => t.ThumbnailImage,opt => opt.Ignore())
+                .ForMember(p => p.Players,opt => opt.Ignore())
+                .ForMember(g => g.GameMaster,opt => opt.Ignore());
 
         }
         private void Map_Character()
@@ -111,12 +117,12 @@ namespace HoLWeb.BusinessLayer
                 .ForMember(c => c.Constitution,opt => opt.MapFrom(c => c.NavForConstitutionStat))
                 .ForMember(i => i.Intelligence,opt => opt.MapFrom(i => i.NavForIntelligenceStat))
                 .ForMember(ch => ch.Charisma,opt => opt.MapFrom(ch => ch.NavForCharismaStat))
-                
-                .ForMember(w=>w.WorldId,opt => opt.MapFrom(w => w.Narrative.WorldId))
+
+                .ForMember(w => w.WorldId,opt => opt.MapFrom(w => w.Narrative.WorldId))
                 .ForMember(n => n.NarrativeId,opt => opt.MapFrom(n => n.NarrativeId))
-                .ForMember(t=>t.ThumbnailImageId,opt => opt.MapFrom(t => t.ThumbnailImage.Id))
+                .ForMember(t => t.ThumbnailImageId,opt => opt.MapFrom(t => t.ThumbnailImage.Id))
                 .ForMember(ip => ip.IndividualProfessionSkillIds,opt => opt.MapFrom(ip => ip.IndividualProfessionSkills.Select(s => s.Id).ToList()));
-            
+
             CreateMap<CharacterDto,Character>()
                 .ForMember(s => s.NavForStrengthStat,opt => opt.Ignore())
                 .ForMember(a => a.NavForAgilityStat,opt => opt.Ignore())
@@ -138,27 +144,7 @@ namespace HoLWeb.BusinessLayer
         {
             CreateMap<BaseSpecificSkill,SpecificSkillDto>();
         }
-        private void Map_ThumbnailImage()
-        {   //Model to Dto
-            CreateMap<ThumbImgRace,ThumbnailImageDto>()
-                .ForMember(r => r.RaceId,opt => opt.MapFrom(r => r.RaceId));
-            CreateMap<ThumbImgWorld,ThumbnailImageDto>()
-                .ForMember(w => w.WorldId,opt => opt.MapFrom(w => w.WorldId));
-            CreateMap<ThumbImgCharacter,ThumbnailImageDto>()
-                .ForMember(c => c.CharacterId,opt => opt.MapFrom(c => c.CharacterId));
-            CreateMap<ThumbImgNarrative,ThumbnailImageDto>()
-                .ForMember(n => n.NarrativeId,opt => opt.MapFrom(n => n.NarrativeId));
-
-            //Dto to Model
-            CreateMap<ThumbnailImageDto,ThumbImgRace>()
-                .ForMember(r => r.Race,opt => opt.Ignore());
-            CreateMap<ThumbnailImageDto,ThumbImgWorld>()
-                .ForMember(w => w.World,opt => opt.Ignore());
-            CreateMap<ThumbnailImageDto,ThumbImgCharacter>()
-                .ForMember(c => c.Character,opt => opt.Ignore());
-            CreateMap<ThumbnailImageDto,ThumbImgNarrative>()
-                .ForMember(n=>n.Narrative,opt => opt.Ignore());
-        }
+        
         private void Map_ValueTuple()
         {
             CreateMap<Tuple<int,int>,int[]>()

@@ -6,7 +6,7 @@
 @using SixLabors.ImageSharp
 @using HoLWeb.BusinessLayer.Models
 
-@inject IThumbImgWorldManager ThumbManager
+@inject IThumbImgManager ThumbManager
 @inject NavigationManager Navigation
 
 
@@ -90,7 +90,6 @@
                     baseImage = $"data:image/webp;base64,{Convert.ToBase64String(webpBytes)}";
 
                     thumb.ImageName = worldModel.WorldName;
-                    thumb.WorldId = worldModel.Id;
                     thumb.ImageData = webpBytes;
                     Add();
                 }

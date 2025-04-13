@@ -5,6 +5,7 @@
 @using System.Text.Encodings.Web
 @using HoLWeb.DataLayer.Database
 @using HoLWeb.DataLayer.Models.IdentityModels
+@using HoLWeb.Security
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 
@@ -82,6 +83,14 @@
         }
 
         Logger.LogInformation("User created a new account with password.");
+
+        // // The User has Claim GameRole as Spectator
+        // var claims = new List<Claim>
+        // {
+        //     new Claim("GameRole",ClaimName.Spectator),
+        // };
+        // await UserManager.AddClaimsAsync(user,claims);
+
 
         var userId = await UserManager.GetUserIdAsync(user);
         var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);

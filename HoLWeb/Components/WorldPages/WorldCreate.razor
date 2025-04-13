@@ -1,0 +1,224 @@
+﻿@page "/worlds/create"
+
+@using Microsoft.EntityFrameworkCore
+@using HoLWeb.BusinessLayer.Models
+@inject NavigationManager NavigationManager
+@using HoLWeb.BusinessLayer.Interfaces
+@using HoLWeb.Components.Account.Shared
+@using System.Security.Claims
+@using HoLWeb.DataLayer.Models.IdentityModels
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using HoLWeb.Components.ComponentHelpers
+
+@rendermode InteractiveServer
+@inject IWorldManager worldManager
+@inject IRaceManager racemanager
+@inject INarrativeManager narrativeManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
+
+
+<PageTitle>Create World</PageTitle>
+
+<h1>Tvorba světa</h1>
+
+<Collapse Title="Základní údaje">
+    <EditForm method="post" Model="WorldDto" OnValidSubmit="WorldValidSubmit" FormName="edit" Enhance>
+        <DataAnnotationsValidator />
+        <ValidationSummary role="alert" />
+        <input type="hidden" name="World.Id" value="@WorldDto.Id" />
+        <div class="mb-3">
+            <label for="worldname" class="form-label">WorldName:</label>
+            <InputText id="worldname" @bind-Value="WorldDto.WorldName" class="form-control" />
+            <ValidationMessage For="() => WorldDto.WorldName" class="text-danger" />
+        </div>
+        <div class="mb-3">
+            <label for="worlddescription" class="form-label">WorldDescription:</label>
+            <InputTextArea id="worlddescription" @bind-Value="WorldDto.WorldDescription" class="form-control" />
+            <ValidationMessage For="() => WorldDto.WorldDescription" class="text-danger" />
+        </div>
+        <div class="mb-3">
+            <label for="amountofmagicintheworld" class="form-label">AmountOfMagicInTheWorld:</label>
+            <InputNumber id="amountofmagicintheworld" @bind-Value="WorldDto.AmountOfMagicInTheWorld" class="form-control" />
+            <ValidationMessage For="() => WorldDto.AmountOfMagicInTheWorld" class="text-danger" />
+        </div>
+    </EditForm>
+</Collapse>
+
+<Collapse Title="Výběr ras">
+    <div class="row">
+        <!--Race selector-->
+
+
+        <div class="col-6">
+            <h3>Rasy ve světě</h3>
+            <div class="form-group">
+                <label>Races</label>
+                @foreach(var race in selectRaces)
+                {
+                    if(race is null)
+                    {
+                        <p>ŽÁDNÉ RASY</p>
+                    }
+                    else
+                    {
+                        <div>
+                            <button class="btn btn-outline-success" @onclick="()=>UnSelectedRace(race)">@race.RaceName</button>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="col-6">
+            <h3>Dostupné rasy</h3>
+            <div class="form-group">
+                <label>Races</label>
+                @foreach(var race in remainingRaces.OrderBy(i => i.Id))
+                {
+                    if(race is null)
+                    {
+                        <p>Opuštěný svět bez ras</p>
+                    }
+                    else
+                    {
+                        <div>
+                            <button class="btn btn-outline-info" @onclick="()=>SelectedRace(race)">@race.RaceName</button>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</Collapse>
+
+<Collapse Title="Obrázek" >
+    <h1>Implementovat</h1>
+</Collapse>
+
+<Collapse Title="Založit příběh - volitelné">
+    <div class="row">
+        <div class="col-4">
+            <h3>Příběhy</h3>
+            <ul>
+                @if(WorldDto.Narratives is null || WorldDto.Narratives.Count == 0)
+                {
+                    <p>Žádné příběhy</p>
+                }
+                else
+                {
+                    @foreach(var narrativ in WorldDto.Narratives)
+                    {
+                        <li>@narrativ.NarrativeName</li>
+                    }
+                }
+            </ul>
+        </div>
+
+        <div class="col-8">
+            <EditForm Model="@NarrativeDto" OnValidSubmit="@NarrativeValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="mb-3">
+                    <label for="narrativeName" class="form-label">Narrative Name:</label>
+                    <InputText id="narrativeName" @bind-Value="NarrativeDto.NarrativeName" class="form-control" />
+                    <ValidationMessage For="() => NarrativeDto.NarrativeName" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="narrativeDescription" class="form-label">Narrative Description:</label>
+                    <InputTextArea id="narrativeDescription" @bind-Value="NarrativeDto.NarrativeDescription" class="form-control" />
+                    <ValidationMessage For="() => NarrativeDto.NarrativeDescription" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="era" class="form-label">Era:</label>
+                    <InputText id="era" @bind-Value="NarrativeDto.Era" class="form-control" />
+                    <ValidationMessage For="() => NarrativeDto.Era" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="year" class="form-label">Year:</label>
+                    <InputNumber id="year" @bind-Value="NarrativeDto.Year" class="form-control" />
+                    <ValidationMessage For="() => NarrativeDto.Year" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Přidej příběh</button>
+            </EditForm>
+        </div>
+    </div>
+</Collapse>
+
+<button type="submit" class="btn btn-primary" @onclick="WorldValidSubmit">Vytvořit svět</button>
+
+
+<div>
+    <a href="/worlds">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private WorldDto? WorldDto { get; set; }
+    private NarrativeDto NarrativeDto { get; set; } = new NarrativeDto();
+
+    private List<RaceDto> remainingRaces = new List<RaceDto>();
+    private List<RaceDto> selectRaces = new List<RaceDto>();
+    private List<RaceDto> allRace = new List<RaceDto>();
+
+    private List<NarrativeDto> allNarratives = new List<NarrativeDto>();
+
+    private ClaimsPrincipal ClaimsPrincipal { get; set; } = new();
+    private ApplicationUser User { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        WorldDto = new WorldDto();
+        var indentity = AuthenticationStateProvider.GetAuthenticationStateAsync().Result;
+        ClaimsPrincipal = indentity.User;
+        User = await UserManager.GetUserAsync(ClaimsPrincipal);
+
+        allRace.AddRange(await racemanager.GetAllDataAsync());
+        foreach(var race in allRace)
+        {
+            if(!selectRaces.Select(i => i.Id).Contains(race.Id))
+            {
+                remainingRaces.Add(race);
+            }
+        }
+    }
+
+    private void SelectedRace(RaceDto race)
+    {
+        selectRaces.Add(race);
+        remainingRaces.Remove(race);
+    }
+
+    private void UnSelectedRace(RaceDto race)
+    {
+        selectRaces.Remove(race);
+        remainingRaces.Add(race);
+    }
+
+    private async Task WorldValidSubmit()
+    {
+        WorldDto.Races = selectRaces;
+        WorldDto.RaceIds = selectRaces.Select(i => i.Id).ToList();
+
+        WorldDto.FounderId = User.Id;
+
+        var createdWorld = await worldManager.AddDataAsync(WorldDto);
+        NavigationManager.NavigateTo("/worlds");
+
+    }
+
+    private async Task NarrativeValidSubmit()
+    {
+        NarrativeDto.GameMasterGuid = User.Id.ToString();
+        WorldDto.Narratives.Add(NarrativeDto);
+        NarrativeDto = new NarrativeDto();
+    }
+
+
+}

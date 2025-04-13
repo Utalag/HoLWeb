@@ -1,0 +1,83 @@
+﻿@using HoLWeb.Components.ComponentHelpers
+
+<div>
+    <div class="raceTitleGroup" role="group">
+        @foreach(var tabPage in TabPages)
+        {
+            <button class="buttonTitle" style="@GetBtnCssClass(tabPage)" @onclick=@(() => SetActivePage(tabPage))>
+                @tabPage.Title
+            </button>
+        }
+    </div>
+    <div>
+        <CascadingValue Value="this">
+            @ChildContent
+        </CascadingValue>
+    </div>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public List<TabPage> TabPages { get; set; }
+
+    public TabPage ActivePage { get; set; }
+
+    public void SetActivePage(TabPage page)
+    {
+        ActivePage = page;
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        TabPages = new List<TabPage>();
+        base.OnInitialized();
+    }
+
+    public void AddPage(TabPage page)
+    {
+        TabPages.Add(page);
+        if(TabPages.Count == 1)
+            SetActivePage(page);
+    }
+
+    private string GetBtnCssClass(TabPage page)
+    {
+        return page == ActivePage
+            ? "background-color: darkgrey;font-weight: bold;border-radius: 10px;"
+            : "";
+    }
+}
+
+<style>
+    .raceTitleGroup {
+        border-bottom: 2px solid purple;
+        accent-color: purple;
+;
+    }
+
+    .buttonTitle {
+        display: inline-block;
+        text-align: center;
+        text-decoration: none;
+        vertical-align: middle;
+        width:fit-content;
+        min-width:80px;
+
+        border: none;
+        border-bottom: 1px solid purple;
+        padding: 5px;
+        margin: 5px;
+        cursor: pointer;
+        text-align: center; /* Volitelné: zarovnání textu na střed */
+        background-color: transparent; /* Volitelné: průhledné pozadí */
+        color: black; /* Volitelné: barva textu */
+    }
+
+
+    
+</style>

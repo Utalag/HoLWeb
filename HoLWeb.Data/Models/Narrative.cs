@@ -1,5 +1,4 @@
 ﻿using HoLWeb.DataLayer.Models.IdentityModels;
-using HoLWeb.DataLayer.Models.ThumbModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,14 +13,18 @@ namespace HoLWeb.DataLayer.Models
         public string NarrativeDescription { get; set; } = string.Empty;
         public string Era { get; set; } = string.Empty;
         public int Year { get; set; }
-        public int WorldId { get; set; }
 
-        public virtual ThumbImgNarrative? ThumbnailImage { get; set; }
+        //public virtual ThumbnailImage? ThumbnailImage { get; set; }
+        //public int? ThumbnailImageId { get; set; }
+
+
         public virtual World? World { get; set; }
-        public virtual List<Character>? Characters { get; set; } = new List<Character>();
-        public virtual List<ProfessionModul>? ProfessionModules { get; set; } = new List<ProfessionModul>();
 
-        public virtual List<ApplicationUser>? Players { get; set; } = new List<ApplicationUser>();
+        public int? WorldId { get; set; }
+        public virtual IList<Character>? Characters { get; set; } 
+        public virtual IList<ProfessionModul>? ProfessionModules { get; set; } 
+
+        public virtual IList<ApplicationUser>? Players { get; set; }
         public virtual ApplicationUser? GameMaster { get; set; }
         public Guid? GameMasterId { get; set; }
 

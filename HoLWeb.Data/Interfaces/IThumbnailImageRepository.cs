@@ -1,4 +1,4 @@
-﻿using HoLWeb.DataLayer.Models.ThumbModels;
+﻿using HoLWeb.DataLayer.Models;
 
 namespace HoLWeb.DataLayer.Interfaces
 {
@@ -6,17 +6,8 @@ namespace HoLWeb.DataLayer.Interfaces
     //{
 
     //}
-    public interface IThumbImgWorldRepository : IGenericRepository<ThumbImgWorld>
-    {
-    }
-    public interface IThumbImgRaceRepository : IGenericRepository<ThumbImgRace>
-    {
-    }
-    public interface IThumbImgCharacterRepository : IGenericRepository<ThumbImgCharacter>
+    public interface IThumbnailImageRepository : IGenericRepository<ThumbnailImage>
     {
     }
 
-    public interface IThumbImgNarrativeRepository : IGenericRepository<ThumbImgNarrative>
-    {
-    }
 }

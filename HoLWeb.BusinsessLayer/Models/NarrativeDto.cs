@@ -19,9 +19,10 @@ namespace HoLWeb.BusinessLayer.Models
 
         public int WorldId { get; set; }
         public int ThumbnailImageId { get; set; }
-        public List<int>? RaceIds { get; set; } = new List<int>();
-        public List<int>? CharacterIds { get; set; } = new List<int>();
-        public List<int>? ProfessionModulIds { get; set; } = new List<int>();
+        public List<int> RaceIds { get; set; } = new List<int>(); // just an information list
+
+        public List<int> CharacterIds { get; set; } = new List<int>();
+        public List<int> ProfessionModulIds { get; set; } = new List<int>();
         public string? GameMasterGuid { get; set; } = string.Empty;
         public List<Guid>? PlayersGuids { get; set; } = new List<Guid>();
 

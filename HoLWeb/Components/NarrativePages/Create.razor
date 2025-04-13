@@ -4,6 +4,9 @@
 @using HoLWeb.DataLayer.Models.IdentityModels
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@using HoLWeb.Security
+
 @attribute [Authorize]
 
 @inject UserManager<ApplicationUser> UserManager
@@ -11,8 +14,6 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Create</PageTitle>
-
-
 
 <AuthorizeView Policy="AdminOnly">
     <Authorized Context="authorizedContext">
@@ -71,34 +72,36 @@
 
 </AuthorizeView>
 
-
-
-
-
-
-
 @code {
     [SupplyParameterFromForm]
     private NarrativeDto Narrative { get; set; } = new();
     private string userId = string.Empty;
 
+    private ClaimsPrincipal ClaimsPrincipal { get; set; }
+    private ApplicationUser ApplicationUser { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-        
-        if(user.Identity.IsAuthenticated)
+        ClaimsPrincipal = authState.User;
+
+        if(ClaimsPrincipal.Identity.IsAuthenticated)
         {
-            var applicationUser = await UserManager.GetUserAsync(user);
-            userId = applicationUser.Id.ToString();
+            ApplicationUser = await UserManager.GetUserAsync(ClaimsPrincipal);
+            userId = ApplicationUser.Id.ToString();
         }
-        
     }
 
     private async Task AddNarrative()
     {
         Narrative.GameMasterGuid = userId;
-        await NarrativeManager.AddDataAsync(Narrative);
-        NavigationManager.NavigateTo("/narratives");
+        var createdNarrative = await NarrativeManager.AddDataAsync(Narrative);
+
+        // Create a new claim for the user
+        var claims = new Claim(nameof(Narrative),$"{ClaimName.GameMaster}|{createdNarrative.Id}");
+        // Add the claim to the user
+        var result = await UserManager.AddClaimAsync(ApplicationUser,claims);
+
+        NavigationManager.NavigateTo("/narrative");
     }
 }

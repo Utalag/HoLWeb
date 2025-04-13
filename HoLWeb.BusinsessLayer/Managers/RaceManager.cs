@@ -15,13 +15,13 @@ namespace HoLWeb.BusinessLayer.Managers
         IRaceRepository raceRepository,
         IWorldRepository worldRepository,
         IRaceStatRepository raceStatRepository,
-        IThumbImgRaceRepository thumbImgRepository
+        IThumbnailImageRepository thumbImgRepository
         ) : GenericManager<Race,RaceDto>(logger,mapper,repository), IRaceManager
     {
         private readonly IRaceRepository raceRepository = raceRepository;
         private readonly IWorldRepository worldRepository = worldRepository;
         private readonly IRaceStatRepository raceStatRepository = raceStatRepository;
-        private readonly IThumbImgRaceRepository thumbImgRepository = thumbImgRepository;
+        private readonly IThumbnailImageRepository thumbImgRepository = thumbImgRepository;
 
         public override async Task<IList<RaceDto>> GetAllDataAsync(bool dependencies = false)
         {

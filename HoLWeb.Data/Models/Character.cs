@@ -1,5 +1,4 @@
 ﻿using HoLWeb.DataLayer.Models.GeneralAttributes;
-using HoLWeb.DataLayer.Models.ThumbModels;
 
 namespace HoLWeb.DataLayer.Models
 {
@@ -24,6 +23,7 @@ namespace HoLWeb.DataLayer.Models
         public int ConstitutionStatId { get; set; }
         public int IntelligenceStatId { get; set; }
         public int CharismaStatId { get; set; }
+        public int? ThumbnailImageId { get; set; }
 
 
         // navigation properties
@@ -35,7 +35,7 @@ namespace HoLWeb.DataLayer.Models
         public virtual CharacterStat? NavForIntelligenceStat { get; set; }
         public virtual CharacterStat? NavForCharismaStat { get; set; }
 
-        public virtual ThumbImgCharacter? ThumbnailImage { get; set; }
+        public virtual ThumbnailImage? ThumbnailImage { get; set; }
         public virtual List<ProfessionSkill>? IndividualProfessionSkills { get; set; }
 
         public Character[] Initial()

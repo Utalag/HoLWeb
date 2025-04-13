@@ -2,14 +2,13 @@
 
 <ul class="nav justify-content-center">
     <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="@($"Worlds/WorldDetail?id={World.Id}")">Detail</a>
-        @* <a class="nav-link" aria-current="page" href="@($"Worlds/WorldDetail/{World.Id}")">Detail</a> *@
+        <a class="nav-link" aria-current="page" href="@($"worlds/info?id={World.Id}")">Detail</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Hráči</a>
+        <a class="nav-link" href="/worlds/create">Nový svět</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="@($"narratives?id={World.Id}")">Příběhy</a>
+        <a class="nav-link" href="@($"narrative?id={World.Id}")">Příběhy</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Monstra</a>

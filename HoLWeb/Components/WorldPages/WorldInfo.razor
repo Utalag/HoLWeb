@@ -1,65 +1,148 @@
-﻿@page "/worlds/info"
-@page "/worlds/info/{WorldId:int}"
+﻿@* @page "/worlds/info/{WorldId:int}" *@
+@page "/worlds/info"
+
 
 @using HoLWeb.BusinessLayer.Managers
 @using HoLWeb.BusinessLayer.Models
 @using HoLWeb.BusinessLayer.Interfaces
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Forms
+@using HoLWeb.Components.ComponentHelpers
+@using HoLWeb.DataLayer.Models.IdentityModels
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
 
 @rendermode InteractiveServer
 
 @inject IWorldManager WorldManager
-@inject IRaceManager RaceManager
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
 
-<EditForm Enhance Model="@world" OnValidSubmit="HandleValidSubmitAsync" FormName="EditWorld" >
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<PageTitle>World Detail</PageTitle>
 
-    <div class="form-group">
-        <label for="worldName">World Name</label>
-        <InputText id="worldName" class="form-control" @bind-Value="world.WorldName" />
-    </div>
 
-    <div class="form-group">
-        <label for="worldDescription">World Description</label>
-        <InputTextArea id="worldDescription" class="form-control" @bind-Value="world.WorldDescription" />
-    </div>
 
-    <div class="form-group">
-        <label for="amountOfMagic">Amount of Magic in the World</label>
-        <InputNumber id="amountOfMagic" class="form-control" @bind-Value="world.AmountOfMagicInTheWorld" />
-    </div>
+<h3 class="text-center">Obrázek</h3>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-</EditForm>
+<h2 class="text-center">@world.WorldName</h2>
+
+<Collapse Title="Popis">
+    <p><strong>Magie ve světě: </strong> @world.AmountOfMagicInTheWorld %</p>
+    <p><strong>Popis: </strong> @world.WorldDescription</p>
+    <p><strong>Založil: </strong> @world.FounderUseName</p>
+</Collapse>
+<Collapse Title="Příběhy">
+    <TabControl>
+        @if(world.Narratives.Any())
+        {
+            @foreach(var narrative in world.Narratives)
+            {
+                <TabPage Title="@narrative.NarrativeName">
+                    <p><strong>Věk:</strong> @narrative.Era</p>
+                    <p><strong>Rok:</strong> @narrative.Year</p>
+                    <p><strong>Popis:</strong> @narrative.NarrativeDescription</p>
+                    @if(narrative.GameMasterGuid != string.Empty)
+                    {
+                        <p><strong>GM:</strong>@UserManager.FindByIdAsync(narrative.GameMasterGuid.ToString()).Result.NickName</p>
+                    }
+                    else
+                    {
+                        <p><strong>GM:</strong> Není nastaveno</p>
+                    }
+
+                    <p><strong>Hráči:</strong></p>
+                    <ul>
+                        @foreach(var player in narrative.PlayersGuids)
+                        {
+                            <li>@UserManager.FindByIdAsync(player.ToString()).Result.NickName</li>
+                        }
+                    </ul>
+                </TabPage>
+            }
+        }
+        else
+        {
+            <p>Žádné příběhy.</p>
+        }
+    </TabControl>
+</Collapse>
+<Collapse Title="Rasy">
+    <TabControl>
+        @if(world.Races.Any())
+        {
+            @foreach(var race in world.Races)
+            {
+                <TabPage Title="@race.RaceName">
+                    <button class="btn btn-info">Ukaž podrobnosti - implementovat přesměrování</button>
+                    <p><strong>Popis:</strong> @race.RaceDescription</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Atribut</th>
+                                <th>Rozsah</th>
+                                <th>Pohyblivost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Síla</td>
+                                <td>@race.StrengthStat.RangeLow-@race.StrengthStat.RangeHigh</td>
+                            </tr>
+                            <tr>
+                                <td>Obratnost</td>
+                                <td>@race.AgilityStat.RangeLow-@race.AgilityStat.RangeHigh</td>
+                            </tr>
+                            <tr>
+                                <td>Odolnost</td>
+                                <td>@race.ConstitutionStat.RangeLow-@race.ConstitutionStat.RangeHigh</td>
+                            </tr>
+                            <tr>
+                                <td>Inteligence</td>
+                                <td>@race.IntelligenceStat.RangeLow-@race.IntelligenceStat.RangeHigh</td>
+                            </tr>
+                            <tr>
+                                <td>Charisma</td>
+                                <td>@race.CharismaStat.RangeLow-@race.CharismaStat.RangeHigh</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </TabPage>
+            }
+        }
+        else
+        {
+            <p>Žádné rasy.</p>
+        }
+    </TabControl>
+</Collapse>
+
+<button @onclick=@GoToWorlds >Zpet na seznam světů</button>
+
+
 
 
 @code {
-    [Parameter] public int WorldId { get; set; }
+    //[Parameter]
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
     private WorldDto world = new WorldDto();
 
     protected override async Task OnInitializedAsync()
     {
-        if (WorldId != 0)
+        if(Id != 0)
         {
-            world = await WorldManager.GetDateByIdAsync(WorldId);
-            
-        }
-    }
-
-    private async Task HandleValidSubmitAsync()
-    {
-        if (WorldId != 0)
-        {
-            await WorldManager.UpdateDataAsync(world, WorldId);
+            world = await WorldManager.GetWorld(Id);
         }
         else
         {
-            await WorldManager.AddDataAsync(world);
+            Navigation.NavigateTo("/worlds");
         }
+    }
 
-        Navigation.NavigateTo("/worlds/info/4");
+    private void GoToWorlds()
+    {
+        Navigation.NavigateTo("/worlds");
     }
 }

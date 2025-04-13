@@ -2,7 +2,7 @@
 
 namespace HoLWeb.BusinessLayer.Interfaces
 {
-	public interface INarrativeManager : IGenericManager<NarrativeDto>
+    public interface INarrativeManager : IGenericManager<NarrativeDto>
     {
-	}
+    }
 }

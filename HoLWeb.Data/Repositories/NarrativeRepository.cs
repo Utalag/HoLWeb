@@ -17,7 +17,7 @@ namespace HoLWeb.DataLayer.Repositories
             var query = dbSet
                         .Include(ch => ch.Characters)
                         .Include(w => w.World)
-                        .Include(t => t.ThumbnailImage)
+                        //.Include(t => t.ThumbnailImage)
                         .Include(p => p.ProfessionModules);
 
             if(!query.Any())

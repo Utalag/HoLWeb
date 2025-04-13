@@ -1,5 +1,4 @@
 ﻿using HoLWeb.DataLayer.Models.GeneralAttributes;
-using HoLWeb.DataLayer.Models.ThumbModels;
 
 namespace HoLWeb.DataLayer.Models
 {
@@ -42,7 +41,8 @@ namespace HoLWeb.DataLayer.Models
         public virtual RaceStat? IntelligenceStat { get; set; }
         public virtual RaceStat? CharismaStat { get; set; }
 
-        public virtual ThumbImgRace? ThumbnailImage { get; set; }
+        public virtual ThumbnailImage? ThumbnailImage { get; set; }
+        public int? ThumbnailImageId { get; set; }
 
 
 

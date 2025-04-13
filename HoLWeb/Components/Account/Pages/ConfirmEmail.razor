@@ -3,11 +3,14 @@
 @using System.Text
 @using HoLWeb.DataLayer.Database
 @using HoLWeb.DataLayer.Models.IdentityModels
+@using HoLWeb.Security
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 
+
 @inject UserManager<ApplicationUser> UserManager
 @inject IdentityRedirectManager RedirectManager
+
 
 <PageTitle>Confirm email</PageTitle>
 
@@ -41,6 +44,7 @@
         }
         else
         {
+            
             var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(Code));
             var result = await UserManager.ConfirmEmailAsync(user, code);
             statusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";

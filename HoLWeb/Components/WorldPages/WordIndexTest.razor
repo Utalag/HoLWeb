@@ -19,7 +19,7 @@
     <PropertyColumn Property="world => world.WorldDescription" />
     <PropertyColumn Property="world => world.AmountOfMagicInTheWorld" />
     <PropertyColumn title="Races" Property="world=> string.Join('|',world.RaceIds.ToList())" />
-    <PropertyColumn Property="world => world.GameMasterId" />
+    <PropertyColumn Property="world => world.FounderId" />
 
     <TemplateColumn Context="world">
         <a href="@($"worldsTest/edit?id={world.Id}")">Edit</a> |

@@ -1,41 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="HeroesOfLegends.Data.Repositories.GenericCRUD&lt;TEntity&gt;">
-    <Position X="17.25" Y="1.25" Width="3.5" />
-    <AssociationLine Name="db" Type="HeroesOfLegends.Database.HoLDbContext" FixedFromPoint="true">
-      <Path>
-        <Point X="17.25" Y="2.042" />
-        <Point X="15.333" Y="2.042" Type="JumpStart" />
-        <Point X="15.167" Y="2.042" Type="JumpEnd" />
-        <Point X="13.5" Y="2.042" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="dbSet" Type="Microsoft.EntityFrameworkCore.DbSet&lt;TEntity&gt;" FixedFromPoint="true">
-      <Path>
-        <Point X="20.75" Y="2.042" />
-        <Point X="22.75" Y="2.042" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="logger" Type="Microsoft.Extensions.Logging.ILogger&lt;TCategoryName&gt;" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="19" Y="1.25" />
-        <Point X="19" Y="0.875" />
-        <Point X="15.25" Y="0.875" />
-        <Point X="15.25" Y="3.75" />
-      </Path>
-    </AssociationLine>
-    <TypeIdentifier>
-      <HashCode>gAQAAMAACAAQAAADAQAAIAEAAAFBAAgACYAAAAAAEIA=</HashCode>
-      <FileName>Repositories\GenericCRUD.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="db" />
-      <Field Name="dbSet" />
-      <Field Name="logger" />
-    </ShowAsAssociation>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="HeroesOfLegends.Data.Repositories.CharacterRepository">
+  <Class Name="HoLWeb.DataLayer.Repositories.CharacterRepository">
     <Position X="25.5" Y="8" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
@@ -43,34 +8,15 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HeroesOfLegends.Data.Repositories.CharacterStatRepository">
-    <Position X="27.75" Y="8" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Repositories\CharacterStatRepository.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="HeroesOfLegends.Data.Repositories.NarrativeRepository">
-    <Position X="10.75" Y="8" Width="2" />
+  <Class Name="HoLWeb.DataLayer.Repositories.NarrativeRepository">
+    <Position X="16" Y="8" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Repositories\NarrativeRepository.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HeroesOfLegends.Data.Repositories.ProfessionModulRepository">
-    <Position X="17.75" Y="8" Width="2.5" />
-    <TypeIdentifier>
-      <HashCode>AAAACAAABAAAAABBAAEBQCAJAAAAIAAAgQAAAABAAAg=</HashCode>
-      <FileName>Repositories\ProfessionModulRepository.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_mapper" />
-    </ShowAsAssociation>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="HeroesOfLegends.Data.Repositories.ProfessionSkillRepository">
+  <Class Name="HoLWeb.DataLayer.Repositories.ProfessionSkillRepository">
     <Position X="20.5" Y="8" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAEAAAAAAMAAAAABQAAAAQEAAAAAAAA=</HashCode>
@@ -78,23 +24,15 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HeroesOfLegends.Data.Repositories.RaceRepository">
-    <Position X="13.25" Y="8" Width="2" />
+  <Class Name="HoLWeb.DataLayer.Repositories.RaceRepository">
+    <Position X="18.25" Y="8" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Repositories\RaceRepository.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HeroesOfLegends.Data.Repositories.RaceStatRepository">
-    <Position X="15.5" Y="8" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Repositories\RaceStatRepository.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="HeroesOfLegends.Data.Repositories.SpecificSkillReposotory">
+  <Class Name="HoLWeb.DataLayer.Repositories.SpecificSkillReposotory">
     <Position X="23" Y="8" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
@@ -102,8 +40,8 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HeroesOfLegends.Data.Repositories.WorldRepository">
-    <Position X="8.25" Y="8" Width="2" />
+  <Class Name="HoLWeb.DataLayer.Repositories.WorldRepository">
+    <Position X="13.75" Y="8" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Repositories\WorldRepository.cs</FileName>
@@ -115,39 +53,32 @@
     <TypeIdentifier />
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HeroesOfLegends.Database.HoLDbContext">
-    <Position X="10.5" Y="1.25" Width="3" />
-    <TypeIdentifier>
-      <HashCode>IAAAEAAAANAAAAAIAgAAAIAKUAgAAAAAAQkAAAAAAAI=</HashCode>
-      <FileName>Database\HoLDbContext.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="HeroesOfLegends.Data.Repositories.ThumbImgWorldRepository">
-    <Position X="32" Y="8" Width="1.5" />
+  <Class Name="HoLWeb.DataLayer.Repositories.ThumbImgWorldRepository">
+    <Position X="29.5" Y="8" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Repositories\ThumbnailImageRepository.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HeroesOfLegends.Data.Repositories.ThumbImgRaceRepository">
-    <Position X="35.5" Y="8" Width="1.5" />
+  <Class Name="HoLWeb.DataLayer.Repositories.ThumbImgRaceRepository">
+    <Position X="33" Y="8" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Repositories\ThumbnailImageRepository.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HeroesOfLegends.Data.Repositories.ThumbImgCharacterRepository">
-    <Position X="30.25" Y="8" Width="1.5" />
+  <Class Name="HoLWeb.DataLayer.Repositories.ThumbImgCharacterRepository">
+    <Position X="27.75" Y="8" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Repositories\ThumbnailImageRepository.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HeroesOfLegends.Data.Repositories.ThumbImgNarrativeRepository">
-    <Position X="33.75" Y="8" Width="1.5" />
+  <Class Name="HoLWeb.DataLayer.Repositories.ThumbImgNarrativeRepository">
+    <Position X="31.25" Y="8" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Repositories\ThumbnailImageRepository.cs</FileName>

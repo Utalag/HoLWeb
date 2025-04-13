@@ -1,0 +1,26 @@
+﻿
+
+@if(ParentTabControl.ActivePage == this)
+{
+    @ChildContent
+}
+
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [CascadingParameter]
+    public TabControl ParentTabControl { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if(ParentTabControl == null)
+            throw new ArgumentNullException("ParentPage");
+        ParentTabControl.AddPage(this);
+        base.OnInitialized();
+    }
+}

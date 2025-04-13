@@ -41,7 +41,7 @@ namespace HoLWeb.DataLayerTests.Managers
     //                .ForMember(m => m.RaceIds,opt => opt.MapFrom(m => m.Races.Select(s => s.Id).ToList()))
     //                .ForMember(n => n.NarrativeIds,opt => opt.MapFrom(n => n.Narratives.Select(s => s.Id).ToList()))
     //                .ForMember(img => img.ThumbnailImageId,opt => opt.MapFrom(img => img.ThumbnailImage.Id))
-    //                .ForMember(pl => pl.Players,opt => opt.MapFrom(pl => pl.Players.Select(s => s.Id).ToList()))
+    //                .ForMember(pl => pl.PlayersInWorld,opt => opt.MapFrom(pl => pl.PlayersInWorld.Select(s => s.Id).ToList()))
     //                .ForMember(ignore => ignore.Narratives,opt => opt.Ignore())
     //                .ForMember(ignore => ignore.Races,opt => opt.Ignore())
     //                .ForMember(ignore => ignore.ThumbnailImage,opt => opt.Ignore());

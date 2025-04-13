@@ -1,5 +1,32 @@
 ﻿@page "/narrative/edit"
+@using HoLWeb.DataLayer.Models.IdentityModels
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@using HoLWeb.Security
+@attribute [Authorize]
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
+@inject NavigationManager NavigationManager
+@inject IDictionariesManager DictionaryManager
+
+<AuthorizeView>
+    <Authorized>
+        @if(ClaimsPrincipal.Claims.Any(c => c.Type == nameof(Narrative) && c.Value.StartsWith($"{ClaimName.GameMaster}|{Id}")))
+        {
+            <p>Jste GM v tomto příběhu!</p>
+        }
+        @if(ClaimsPrincipal.Claims.Any(c => c.Type == nameof(Narrative) && c.Value.StartsWith($"{ClaimName.Player}|")))
+        {
+            <p>Jste hráč v některém příběhu!</p>
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <p>Prosím, přihlaste se!</p>
+    </NotAuthorized>
+</AuthorizeView>
 
 <PageTitle>Edit</PageTitle>
 
@@ -18,35 +45,86 @@ else
             <EditForm method="post" Model="Narrative" OnValidSubmit="UpdateNarrative" FormName="edit" Enhance>
                 <DataAnnotationsValidator />
                 <ValidationSummary role="alert"/>
+
                 <input type="hidden" name="Narrative.Id" value="@Narrative.Id" />
+
                 <div class="mb-3">
                     <label for="narrativename" class="form-label">NarrativeName:</label>
                     <InputText id="narrativename" @bind-Value="Narrative.NarrativeName" class="form-control" />
                     <ValidationMessage For="() => Narrative.NarrativeName" class="text-danger" />
                 </div>
+
                 <div class="mb-3">
                     <label for="narrativedescription" class="form-label">NarrativeDescription:</label>
                     <InputText id="narrativedescription" @bind-Value="Narrative.NarrativeDescription" class="form-control" />
                     <ValidationMessage For="() => Narrative.NarrativeDescription" class="text-danger" />
                 </div>
+
                 <div class="mb-3">
                     <label for="era" class="form-label">Era:</label>
                     <InputText id="era" @bind-Value="Narrative.Era" class="form-control" />
                     <ValidationMessage For="() => Narrative.Era" class="text-danger" />
                 </div>
+
                 <div class="mb-3">
                     <label for="year" class="form-label">Year:</label>
                     <InputNumber id="year" @bind-Value="Narrative.Year" class="form-control" />
                     <ValidationMessage For="() => Narrative.Year" class="text-danger" />
                 </div>
+
                 <div class="mb-3">
                     <label for="worldid" class="form-label">WorldId:</label>
                     <InputNumber id="worldid" @bind-Value="Narrative.WorldId" class="form-control" />
                     <ValidationMessage For="() => Narrative.WorldId" class="text-danger" />
                 </div>
+
                 <button type="submit" class="btn btn-primary">Save</button>
             </EditForm>
         </div>
+    </div>
+
+    <div class="d-inline-flex">
+        <div>
+            <ul>
+                RaceIds:
+                @foreach(var id in Narrative.CharacterIds)
+                {
+                    <li>@RaceNames[id]</li>
+                }
+            </ul>
+        </div>
+
+        <div>
+            <ul>
+                CharacterIds:
+                @foreach(var id in Narrative.CharacterIds)
+                {
+                    <li>@id</li>
+                }
+            </ul>
+        </div>
+
+        <div>
+            <ul>
+                ProfessionModul:
+                @foreach(var id in Narrative.ProfessionModules)
+                {
+                    <li>@id</li>
+                }
+            </ul>
+        </div>
+
+        <div>
+            <ul>
+                Players:
+                @foreach(var id in Narrative.PlayersGuids)
+                {
+                    <li>@id.ToString()</li>
+                }
+            </ul>
+        </div>
+
+
     </div>
 }
 
@@ -63,9 +141,19 @@ else
     [SupplyParameterFromForm]
     private NarrativeDto? Narrative { get; set; } = new();
 
+    private ApplicationUser User { get; set; } = new();
+    private ClaimsPrincipal ClaimsPrincipal { get; set; } = new();
+    private Dictionary<int,string> RaceNames { get; set; } = new();
+    private Dictionary<string,string> NickNames { get; set; } = new();
+
     protected override async Task OnInitializedAsync()
     {
         Narrative = await NarrativeManager.GetDateByIdAsync(Id);
+
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        ClaimsPrincipal = authState.User;
+    
+        RaceNames = await DictionaryManager.GetRaceNamesDictionary();
 
         if (Narrative is null)
         {

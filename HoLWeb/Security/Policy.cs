@@ -21,6 +21,13 @@ namespace HoLWeb.Security
                 options.AddPolicy(Policy.UserOnly,policy => policy.RequireRole(ApplicationRole.Admin,ApplicationRole.User));
 
             });
+
+            builder.Services.AddAuthorizationCore(options =>
+            {
+                options.AddPolicy("Spectator",policy => policy.RequireClaim("GameRole",ClaimName.Spectator));
+                options.AddPolicy("Player",policy => policy.RequireClaim("GameRole",ClaimName.Player));
+                options.AddPolicy("Founder",policy => policy.RequireClaim("GameRole",ClaimName.GameMaster));
+            });
         }
     }
 }

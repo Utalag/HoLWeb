@@ -2,7 +2,6 @@
 using HoLWeb.BusinessLayer.Interfaces;
 using HoLWeb.BusinessLayer.Interfaces.IThumbImgManagers;
 using HoLWeb.BusinessLayer.Managers;
-using HoLWeb.BusinessLayer.Managers.ThumbImgManagers;
 using HoLWeb.BusinessLayer.Models;
 using HoLWeb.BusinessLayer.StateServices;
 using HoLWeb.Components;
@@ -31,7 +30,7 @@ builder.Services.AddRazorComponents()
 // Configure FluentEmail
 builder.Services.AddFluentEmail("example@test.com")
     .AddRazorRenderer()
-    .AddSmtpSender("localhost",25); // Použijte "localhost" a port "25" pro Papercut SMTP
+    .AddSmtpSender("localhost",25); // Use "localhost" and port "25" for Papercut SMTP
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
@@ -49,7 +48,7 @@ builder.Services.AddAuthentication(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<HoLWebDbContext>(options =>
     options.UseSqlServer(connectionString)
-    .UseLazyLoadingProxies()
+    //.UseLazyLoadingProxies()
 //.ConfigureWarnings(x => x.Ignore(CoreEventId.LazyLoadOnDisposedContextWarning))
 );
 
@@ -89,11 +88,8 @@ builder.Services.AddScoped<IProfessionSkillRepository,ProfessionSkillRepository>
 builder.Services.AddScoped<ISpecificSkillReposotory,SpecificSkillReposotory>();
 builder.Services.AddScoped<ICharacterStatRepository,CharacterStatRepository>();
 builder.Services.AddScoped<IRaceStatRepository,RaceStatRepository>();
+builder.Services.AddScoped<IThumbnailImageRepository,ThumbnailImageRapository>();
 
-builder.Services.AddScoped<IThumbImgWorldRepository,ThumbImgWorldRepository>();
-builder.Services.AddScoped<IThumbImgNarrativeRepository,ThumbImgNarrativeRepository>();
-builder.Services.AddScoped<IThumbImgRaceRepository,ThumbImgRaceRepository>();
-builder.Services.AddScoped<IThumbImgCharacterRepository,ThumbImgCharacterRepository>();
 
 //manazery
 
@@ -107,10 +103,8 @@ builder.Services.AddScoped<ISpecificSkillManager,SpecificSkillManager>();
 builder.Services.AddScoped<ICharacterStatManager,CharacterStatManager>();
 builder.Services.AddScoped<IRaceStatManager,RaceStatManager>();
 
-builder.Services.AddScoped<IThumbImgCharacterManager,ThumbImgCharacterManager>();
-builder.Services.AddScoped<IThumbImgNarrativeManager,ThumbImgNarrativeManager>();
-builder.Services.AddScoped<IThumbImgRaceManager,ThumbImgRaceManager>();
-builder.Services.AddScoped<IThumbImgWorldManager,ThumbImgWorldManager>();
+builder.Services.AddScoped<IThumbImgManager,ThumbImgManager>();
+builder.Services.AddScoped<IDictionariesManager,DictionariesManager>();
 
 
 

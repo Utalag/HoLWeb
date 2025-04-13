@@ -17,27 +17,24 @@ namespace HoLWeb.DataLayer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.2")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true)
+                .HasAnnotation("ProductVersion", "9.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ApplicationUserWorld", b =>
+            modelBuilder.Entity("ApplicationUserNarrative", b =>
                 {
+                    b.Property<int>("NarrativesAsPlayersId")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("PlayersId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("WorldsId")
-                        .HasColumnType("int");
+                    b.HasKey("NarrativesAsPlayersId", "PlayersId");
 
-                    b.HasKey("PlayersId", "WorldsId");
+                    b.HasIndex("PlayersId");
 
-                    b.HasIndex("WorldsId");
-
-                    b.ToTable("Worlds_Players", (string)null);
+                    b.ToTable("Narratives_Players", (string)null);
                 });
 
             modelBuilder.Entity("HoLWeb.DataLayer.Models.Character", b =>
@@ -84,6 +81,9 @@ namespace HoLWeb.DataLayer.Migrations
                     b.Property<int>("StrengthStatId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ThumbnailImageId")
+                        .HasColumnType("int");
+
                     b.PrimitiveCollection<string>("Visage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -101,6 +101,8 @@ namespace HoLWeb.DataLayer.Migrations
                     b.HasIndex("NarrativeId");
 
                     b.HasIndex("StrengthStatId");
+
+                    b.HasIndex("ThumbnailImageId");
 
                     b.ToTable("Characters");
 
@@ -198,8 +200,8 @@ namespace HoLWeb.DataLayer.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<long>("Age")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -223,9 +225,6 @@ namespace HoLWeb.DataLayer.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<int?>("NarrativeId")
-                        .HasColumnType("int");
 
                     b.Property<string>("NickName")
                         .HasColumnType("nvarchar(max)");
@@ -258,8 +257,6 @@ namespace HoLWeb.DataLayer.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("NarrativeId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -295,7 +292,7 @@ namespace HoLWeb.DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("WorldId")
+                    b.Property<int?>("WorldId")
                         .HasColumnType("int");
 
                     b.Property<int>("Year")
@@ -1399,6 +1396,9 @@ namespace HoLWeb.DataLayer.Migrations
                     b.Property<int?>("StrengthStatId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ThumbnailImageId")
+                        .HasColumnType("int");
+
                     b.Property<int>("WeightMax")
                         .HasColumnType("int");
 
@@ -1416,6 +1416,8 @@ namespace HoLWeb.DataLayer.Migrations
                     b.HasIndex("IntelligenceStatId");
 
                     b.HasIndex("StrengthStatId");
+
+                    b.HasIndex("ThumbnailImageId");
 
                     b.ToTable("Races");
 
@@ -1606,7 +1608,7 @@ namespace HoLWeb.DataLayer.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("HoLWeb.DataLayer.Models.ThumbModels.ThumbnailImage", b =>
+            modelBuilder.Entity("HoLWeb.DataLayer.Models.ThumbnailImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1635,18 +1637,9 @@ namespace HoLWeb.DataLayer.Migrations
                     b.Property<int>("Y")
                         .HasColumnType("int");
 
-                    b.Property<string>("class")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
-
                     b.HasKey("Id");
 
                     b.ToTable("ThumbnailImages");
-
-                    b.HasDiscriminator<string>("class").HasValue("ThumbnailImage");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("HoLWeb.DataLayer.Models.World", b =>
@@ -1660,7 +1653,7 @@ namespace HoLWeb.DataLayer.Migrations
                     b.Property<int>("AmountOfMagicInTheWorld")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("GameMasterId")
+                    b.Property<Guid?>("FounderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("WorldDescription")
@@ -1673,7 +1666,7 @@ namespace HoLWeb.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameMasterId");
+                    b.HasIndex("FounderId");
 
                     b.ToTable("Worlds");
 
@@ -2748,73 +2741,17 @@ namespace HoLWeb.DataLayer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("HoLWeb.DataLayer.Models.ThumbModels.ThumbImgCharacter", b =>
+            modelBuilder.Entity("ApplicationUserNarrative", b =>
                 {
-                    b.HasBaseType("HoLWeb.DataLayer.Models.ThumbModels.ThumbnailImage");
-
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("CharacterId")
-                        .IsUnique()
-                        .HasFilter("[CharacterId] IS NOT NULL");
-
-                    b.HasDiscriminator().HasValue("ThumbCharacter");
-                });
-
-            modelBuilder.Entity("HoLWeb.DataLayer.Models.ThumbModels.ThumbImgNarrative", b =>
-                {
-                    b.HasBaseType("HoLWeb.DataLayer.Models.ThumbModels.ThumbnailImage");
-
-                    b.Property<int>("NarrativeId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("NarrativeId")
-                        .IsUnique()
-                        .HasFilter("[NarrativeId] IS NOT NULL");
-
-                    b.HasDiscriminator().HasValue("ThumbNarrative");
-                });
-
-            modelBuilder.Entity("HoLWeb.DataLayer.Models.ThumbModels.ThumbImgRace", b =>
-                {
-                    b.HasBaseType("HoLWeb.DataLayer.Models.ThumbModels.ThumbnailImage");
-
-                    b.Property<int>("RaceId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("RaceId")
-                        .IsUnique()
-                        .HasFilter("[RaceId] IS NOT NULL");
-
-                    b.HasDiscriminator().HasValue("ThumbRace");
-                });
-
-            modelBuilder.Entity("HoLWeb.DataLayer.Models.ThumbModels.ThumbImgWorld", b =>
-                {
-                    b.HasBaseType("HoLWeb.DataLayer.Models.ThumbModels.ThumbnailImage");
-
-                    b.Property<int>("WorldId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("WorldId")
-                        .IsUnique()
-                        .HasFilter("[WorldId] IS NOT NULL");
-
-                    b.HasDiscriminator().HasValue("ThumbWorld");
-                });
-
-            modelBuilder.Entity("ApplicationUserWorld", b =>
-                {
-                    b.HasOne("HoLWeb.DataLayer.Models.IdentityModels.ApplicationUser", null)
+                    b.HasOne("HoLWeb.DataLayer.Models.Narrative", null)
                         .WithMany()
-                        .HasForeignKey("PlayersId")
+                        .HasForeignKey("NarrativesAsPlayersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HoLWeb.DataLayer.Models.World", null)
+                    b.HasOne("HoLWeb.DataLayer.Models.IdentityModels.ApplicationUser", null)
                         .WithMany()
-                        .HasForeignKey("WorldsId")
+                        .HasForeignKey("PlayersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -2862,6 +2799,10 @@ namespace HoLWeb.DataLayer.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Strength_Character");
 
+                    b.HasOne("HoLWeb.DataLayer.Models.ThumbnailImage", "ThumbnailImage")
+                        .WithMany()
+                        .HasForeignKey("ThumbnailImageId");
+
                     b.Navigation("Narrative");
 
                     b.Navigation("NavForAgilityStat");
@@ -2873,26 +2814,23 @@ namespace HoLWeb.DataLayer.Migrations
                     b.Navigation("NavForIntelligenceStat");
 
                     b.Navigation("NavForStrengthStat");
-                });
 
-            modelBuilder.Entity("HoLWeb.DataLayer.Models.IdentityModels.ApplicationUser", b =>
-                {
-                    b.HasOne("HoLWeb.DataLayer.Models.Narrative", null)
-                        .WithMany("Players")
-                        .HasForeignKey("NarrativeId");
+                    b.Navigation("ThumbnailImage");
                 });
 
             modelBuilder.Entity("HoLWeb.DataLayer.Models.Narrative", b =>
                 {
                     b.HasOne("HoLWeb.DataLayer.Models.IdentityModels.ApplicationUser", "GameMaster")
-                        .WithMany()
-                        .HasForeignKey("GameMasterId");
+                        .WithMany("NarrativesAsGameMaster")
+                        .HasForeignKey("GameMasterId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("FK_GameMaster_Narrative");
 
                     b.HasOne("HoLWeb.DataLayer.Models.World", "World")
                         .WithMany("Narratives")
                         .HasForeignKey("WorldId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("FK_World_Narrative");
 
                     b.Navigation("GameMaster");
 
@@ -2938,6 +2876,10 @@ namespace HoLWeb.DataLayer.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .HasConstraintName("FK_Strength_Race");
 
+                    b.HasOne("HoLWeb.DataLayer.Models.ThumbnailImage", "ThumbnailImage")
+                        .WithMany()
+                        .HasForeignKey("ThumbnailImageId");
+
                     b.Navigation("AgilityStat");
 
                     b.Navigation("CharismaStat");
@@ -2947,6 +2889,8 @@ namespace HoLWeb.DataLayer.Migrations
                     b.Navigation("IntelligenceStat");
 
                     b.Navigation("StrengthStat");
+
+                    b.Navigation("ThumbnailImage");
                 });
 
             modelBuilder.Entity("HoLWeb.DataLayer.Models.SkillsModels.BaseSpecificSkill", b =>
@@ -2962,12 +2906,13 @@ namespace HoLWeb.DataLayer.Migrations
 
             modelBuilder.Entity("HoLWeb.DataLayer.Models.World", b =>
                 {
-                    b.HasOne("HoLWeb.DataLayer.Models.IdentityModels.ApplicationUser", "GameMaster")
-                        .WithMany()
-                        .HasForeignKey("GameMasterId")
-                        .HasConstraintName("FK_GameMaster_World");
+                    b.HasOne("HoLWeb.DataLayer.Models.IdentityModels.ApplicationUser", "Founder")
+                        .WithMany("EstablishedWorlds")
+                        .HasForeignKey("FounderId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("FK_Founder_World");
 
-                    b.Navigation("GameMaster");
+                    b.Navigation("Founder");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -3096,60 +3041,21 @@ namespace HoLWeb.DataLayer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HoLWeb.DataLayer.Models.ThumbModels.ThumbImgCharacter", b =>
-                {
-                    b.HasOne("HoLWeb.DataLayer.Models.Character", "Character")
-                        .WithOne("ThumbnailImage")
-                        .HasForeignKey("HoLWeb.DataLayer.Models.ThumbModels.ThumbImgCharacter", "CharacterId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Character");
-                });
-
-            modelBuilder.Entity("HoLWeb.DataLayer.Models.ThumbModels.ThumbImgNarrative", b =>
-                {
-                    b.HasOne("HoLWeb.DataLayer.Models.Narrative", "Narrative")
-                        .WithOne("ThumbnailImage")
-                        .HasForeignKey("HoLWeb.DataLayer.Models.ThumbModels.ThumbImgNarrative", "NarrativeId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Narrative");
-                });
-
-            modelBuilder.Entity("HoLWeb.DataLayer.Models.ThumbModels.ThumbImgRace", b =>
-                {
-                    b.HasOne("HoLWeb.DataLayer.Models.Race", "Race")
-                        .WithOne("ThumbnailImage")
-                        .HasForeignKey("HoLWeb.DataLayer.Models.ThumbModels.ThumbImgRace", "RaceId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Race");
-                });
-
-            modelBuilder.Entity("HoLWeb.DataLayer.Models.ThumbModels.ThumbImgWorld", b =>
-                {
-                    b.HasOne("HoLWeb.DataLayer.Models.World", "World")
-                        .WithOne("ThumbnailImage")
-                        .HasForeignKey("HoLWeb.DataLayer.Models.ThumbModels.ThumbImgWorld", "WorldId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("World");
-                });
-
             modelBuilder.Entity("HoLWeb.DataLayer.Models.Character", b =>
                 {
                     b.Navigation("IndividualProfessionSkills");
+                });
 
-                    b.Navigation("ThumbnailImage");
+            modelBuilder.Entity("HoLWeb.DataLayer.Models.IdentityModels.ApplicationUser", b =>
+                {
+                    b.Navigation("EstablishedWorlds");
+
+                    b.Navigation("NarrativesAsGameMaster");
                 });
 
             modelBuilder.Entity("HoLWeb.DataLayer.Models.Narrative", b =>
                 {
                     b.Navigation("Characters");
-
-                    b.Navigation("Players");
-
-                    b.Navigation("ThumbnailImage");
                 });
 
             modelBuilder.Entity("HoLWeb.DataLayer.Models.ProfessionSkill", b =>
@@ -3157,16 +3063,9 @@ namespace HoLWeb.DataLayer.Migrations
                     b.Navigation("BaseSpecificSkills");
                 });
 
-            modelBuilder.Entity("HoLWeb.DataLayer.Models.Race", b =>
-                {
-                    b.Navigation("ThumbnailImage");
-                });
-
             modelBuilder.Entity("HoLWeb.DataLayer.Models.World", b =>
                 {
                     b.Navigation("Narratives");
-
-                    b.Navigation("ThumbnailImage");
                 });
 #pragma warning restore 612, 618
         }

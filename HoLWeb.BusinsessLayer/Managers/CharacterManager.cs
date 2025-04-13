@@ -13,14 +13,14 @@ namespace HoLWeb.BusinessLayer.Managers
     public class CharacterManager(IGenericRepository<Character> genericRepository,ILogger<DbSet<Character>> logger,IMapper mapper,
         IRaceRepository raceRepository,
         ICharacterStatRepository characterStatRepository,
-        IThumbImgCharacterRepository thumbImgRepository,
+        IThumbnailImageRepository thumbImgRepository,
         IProfessionSkillRepository skillRepository,
         ICharacterRepository characterRepository
         ) : GenericManager<Character,CharacterDto>(logger,mapper,genericRepository), ICharacterManager
     {
         private readonly IRaceRepository raceRepository = raceRepository;
         private readonly ICharacterStatRepository characterStatRepository = characterStatRepository;
-        private readonly IThumbImgCharacterRepository thumbImgRepository = thumbImgRepository;
+        private readonly IThumbnailImageRepository thumbImgRepository = thumbImgRepository;
         private readonly IProfessionSkillRepository skillRepository= skillRepository;
         private readonly ICharacterRepository characterRepository = characterRepository;
 

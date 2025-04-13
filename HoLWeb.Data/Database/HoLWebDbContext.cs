@@ -2,10 +2,8 @@
 using HoLWeb.DataLayer.Models.GeneralAttributes;
 using HoLWeb.DataLayer.Models.IdentityModels;
 using HoLWeb.DataLayer.Models.SkillsModels;
-using HoLWeb.DataLayer.Models.ThumbModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 
 namespace HoLWeb.DataLayer.Database
@@ -23,15 +21,6 @@ namespace HoLWeb.DataLayer.Database
         public DbSet<GeneralAttribut>? AttributeStats { get; set; }
         public DbSet<ThumbnailImage>? ThumbnailImages { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if(!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("YourConnectionString")
-                              .EnableSensitiveDataLogging();
-            }
-        }
-
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -47,47 +36,14 @@ namespace HoLWeb.DataLayer.Database
 
             // -----------------M:N One-way -----------------
             Configure_Profession(builder);
-            Confiure_ApplicationUser(builder);
+            Confiure_Narrative(builder);
             // ----------------- 1:1 -----------------
-            Configure_ThumbnailImage(builder);
+
             // ----------------- INIT -----------------
             InitializeData(builder);
             base.OnModelCreating(builder);
         }
-        private void Configure_ThumbnailImage(ModelBuilder builder)
-        {
-            builder.Entity<ThumbnailImage>()
-                .HasDiscriminator<string>("class")
-                .HasValue<ThumbImgCharacter>("ThumbCharacter")
-                .HasValue<ThumbImgNarrative>("ThumbNarrative")
-                .HasValue<ThumbImgRace>("ThumbRace")
-                .HasValue<ThumbImgWorld>("ThumbWorld");
 
-
-            builder.Entity<ThumbImgCharacter>()
-                .HasOne(c => c.Character)
-                .WithOne(c => c.ThumbnailImage)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder.Entity<ThumbImgNarrative>()
-                .HasOne(n => n.Narrative)
-                .WithOne(n => n.ThumbnailImage)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder.Entity<ThumbImgRace>()
-                .HasOne(n => n.Race)
-                .WithOne(n => n.ThumbnailImage)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder.Entity<ThumbImgWorld>()
-                .HasOne(n => n.World)
-                .WithOne(n => n.ThumbnailImage)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.NoAction);
-        }
         private void Configure_AttributeStats(ModelBuilder builder)
         {
             builder.Entity<GeneralAttribut>()
@@ -131,6 +87,7 @@ namespace HoLWeb.DataLayer.Database
                 .HasForeignKey(c => c.CharismaStatId)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_Charisma");
+
         }
         private void Configure_Profession(ModelBuilder builder)
         {
@@ -216,21 +173,59 @@ namespace HoLWeb.DataLayer.Database
             builder.Entity<Race>().HasData(new Race().Initial());
             builder.Entity<Character>().HasData(new Character().Initial());
         }
-        private void Confiure_ApplicationUser(ModelBuilder builder)
+        private void Confiure_Narrative(ModelBuilder builder)
         {
-            builder.Entity<ApplicationUser>()
-                .HasMany(u => u.Worlds)
-                .WithMany(w => w.Players)
-                .UsingEntity(j => j.ToTable("Worlds_Players"));
-                
+            // M:N relationship between Narratives and Players
+            builder.Entity<Narrative>()
+                .HasMany(n => n.Players)
+                .WithMany(a => a.NarrativesAsPlayers)
+                .UsingEntity(j => j.ToTable("Narratives_Players"));
+
+            // 1:N relationship between Narratives and GameMaster
+            builder.Entity<Narrative>()
+                .HasOne(n => n.GameMaster)
+                .WithMany(a => a.NarrativesAsGameMaster)
+                .HasForeignKey(n => n.GameMasterId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_GameMaster_Narrative");
+
+            // 1:N relationship between Narratives and World
+            builder.Entity<Narrative>()
+                .HasOne(n => n.World)
+                .WithMany(w => w.Narratives)
+                .HasForeignKey(n => n.WorldId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_World_Narrative");
+
         }
+
+        private void Configure_User(ModelBuilder builder)
+        {
+
+        }
+
         private void Configure_World(ModelBuilder builder)
         {
+            // M:N relationship between PlayersInWorld and WorldPlayers
+            //builder.Entity<World>()
+            //    .HasMany(w => w.PlayersInWorld)
+            //    .WithMany(a => a.WorldPlayers)
+            //    .UsingEntity(j => j.ToTable("Worlds_Players"));
+
+            // M:N relationship between GameMastersInWorld and WorldGms
+            //builder.Entity<World>()
+            //    .HasMany(w => w.GameMastersInWorld)
+            //    .WithMany(a => a.WorldGms)
+            //    .UsingEntity(j => j.ToTable("Worlds_GameMasters"));
+
+            // 1:N relationship between Founder and EstablishedWorlds
             builder.Entity<World>()
-                .HasOne(w => w.GameMaster)
-                .WithMany()
-                .HasForeignKey(w => w.GameMasterId)
-                .HasConstraintName("FK_GameMaster_World");
+                .HasOne(w => w.Founder)
+                .WithMany(a => a.EstablishedWorlds)
+                .HasForeignKey(w => w.FounderId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_Founder_World");
+
         }
         private int Increment_Id_BaseSpecificSkill<T>(int firstId,ModelBuilder builder) where T : BaseSpecificSkill, new()
         {
@@ -244,8 +239,5 @@ namespace HoLWeb.DataLayer.Database
             builder.Entity<T>().HasData(stats);
             return firstId + stats.Length;
         }
-
-
     }
-
 }

@@ -14,7 +14,8 @@ using Microsoft.Extensions.Logging;
 public class NarrativeManager(ILogger<DbSet<Narrative>> logger,IMapper mapper,IGenericRepository<Narrative> repository,
     INarrativeRepository narrativeRepository,
     IWorldRepository worldRepository,
-    IThumbImgNarrativeRepository thumbImgNarrativeRepository,
+    IRaceRepository raceRepository,
+    IThumbnailImageRepository thumbImgNarrativeRepository,
     ICharacterRepository characterRepository,
     IProfessionModulRepository professionModulRepository,
     UserManager<ApplicationUser> userManager
@@ -22,17 +23,18 @@ public class NarrativeManager(ILogger<DbSet<Narrative>> logger,IMapper mapper,IG
 {
     private readonly INarrativeRepository narrativeRepository = narrativeRepository;
     private readonly IWorldRepository worldRepository = worldRepository;
-    private readonly IThumbImgNarrativeRepository thumbImgNarrativeRepository= thumbImgNarrativeRepository;
-    private readonly ICharacterRepository characterRepository= characterRepository;
-    private readonly IProfessionModulRepository professionModulRepository= professionModulRepository;
-    private readonly UserManager<ApplicationUser> userManager= userManager;
+    private readonly IThumbnailImageRepository thumbImgNarrativeRepository = thumbImgNarrativeRepository;
+    private readonly ICharacterRepository characterRepository = characterRepository;
+    private readonly IProfessionModulRepository professionModulRepository = professionModulRepository;
+    private readonly UserManager<ApplicationUser> userManager = userManager;
+    private readonly IRaceRepository raceRepository = raceRepository;
 
 
 
 
     protected override async Task<Narrative> SetDependenciesAsync(Narrative entity,NarrativeDto dto)
     {
-        entity = await ThumbnailDependency(entity,dto);
+        //entity = await ThumbnailDependency(entity,dto);
         entity = await GameMasterDependency(entity,dto);
         entity = await WorldDependency(entity,dto);
         entity = await CharacterDependency(entity,dto);
@@ -97,14 +99,14 @@ public class NarrativeManager(ILogger<DbSet<Narrative>> logger,IMapper mapper,IG
     // single dependencies
     private async Task<Narrative> ThumbnailDependency(Narrative entity,NarrativeDto dto)
     {
-        if(dto.ThumbnailImageId != 0)
-        {
-            var thumb = await thumbImgNarrativeRepository.FindByIdAsync(dto.ThumbnailImageId);
-            if(thumb != null)
-            {
-                entity.ThumbnailImage = thumb;
-            }
-        }
+        //if(dto.ThumbnailImageId != 0)
+        //{
+        //    var thumb = await thumbImgNarrativeRepository.FindByIdAsync(dto.ThumbnailImageId);
+        //    if(thumb != null)
+        //    {
+        //        entity.ThumbnailImage = thumb;
+        //    }
+        //}
         return entity;
     }
     private async Task<Narrative> GameMasterDependency(Narrative entity,NarrativeDto dto)
@@ -115,6 +117,7 @@ public class NarrativeManager(ILogger<DbSet<Narrative>> logger,IMapper mapper,IG
             if(gm != null)
             {
                 entity.GameMaster = gm;
+                entity.GameMasterId = gm.Id;
             }
         }
         return entity;
@@ -131,5 +134,6 @@ public class NarrativeManager(ILogger<DbSet<Narrative>> logger,IMapper mapper,IG
         }
         return entity;
     }
+
 
 }
